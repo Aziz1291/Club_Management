@@ -534,7 +534,7 @@ if (!isset($_SESSION['username'])) {
                             </div>
                             <div class="content">
                                 <h6 class="mb-10">Total Members</h6>
-                                <h3 class="text-bold mb-10"><?php require_once('../classes/user.php');$us=new User();$nb=$us->nbUser();echo($nb)?></h3>
+                                <h3 class="text-bold mb-10"><?php require_once('../classes/User.php');$us=new User();$nb=$us->nbUser();echo($nb)?></h3>
                                 
                             </div>
                         </div>
@@ -548,7 +548,7 @@ if (!isset($_SESSION['username'])) {
                             </div>
                             <div class="content">
                                 <h6 class="mb-10">Upcoming Events</h6>
-                                <h3 class="text-bold mb-10"><?php require_once('../classes/user.php');$us=new User();$nb=$us->nbEvent();echo($nb)?></h3>
+                                <h3 class="text-bold mb-10"><?php require_once('../classes/User.php');$us=new User();$nb=$us->nbEvent();echo($nb)?></h3>
                                 
                             </div>
                         </div>
@@ -562,7 +562,7 @@ if (!isset($_SESSION['username'])) {
                             </div>
                             <div class="content">
                                 <h6 class="mb-10">Unread Messages</h6>
-                                <h3 class="text-bold mb-10"><?php require_once('../classes/user.php');$us=new User();$nb=$us->nbMsg($_SESSION['id']);echo($nb)?></h3>
+                                <h3 class="text-bold mb-10"><?php require_once('../classes/User.php');$us=new User();$nb=$us->nbMsg($_SESSION['id']);echo($nb)?></h3>
                                 
                             </div>
                         </div>
@@ -576,7 +576,7 @@ if (!isset($_SESSION['username'])) {
                             </div>
                             <div class="content">
                                 <h6 class="mb-10">Event Registrations</h6>
-                                <h3 class="text-bold mb-10"><?php require_once('../classes/user.php');$us=new User();$nb=$us->nbReg($_SESSION['id']);echo($nb)?></h3>
+                                <h3 class="text-bold mb-10"><?php require_once('../classes/User.php');$us=new User();$nb=$us->nbReg($_SESSION['id']);echo($nb)?></h3>
                                 
                             </div>
                         </div>

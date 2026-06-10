@@ -55,8 +55,8 @@
                             </thead>
                             <tbody>
                                 <?php
-                                include("../classes/user.php");
-                                $us = new user();
+                                include("../classes/User.php");
+                                $us = new User();
                                 $res = $us->list_user();
                                 
                                 

@@ -1,6 +1,7 @@
 <?php
 require_once('../connexion.php');
 class Announcement {
+    public $pdo;
 
     public function __construct() {
         $cnx=new connexion();

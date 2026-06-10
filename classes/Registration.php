@@ -3,6 +3,7 @@ class Registration{
     public $id;
     public $member_id;
     public $event_id;
+    public $pdo;
     function __construct(){
         require_once('../connexion.php');
         $cnx=new connexion();
