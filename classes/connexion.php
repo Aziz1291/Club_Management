@@ -45,7 +45,7 @@ class connexion
 
         $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_BOTH,
         ];
 
         // Add SSL only when a CA cert path is provided (Aiven requires SSL)
