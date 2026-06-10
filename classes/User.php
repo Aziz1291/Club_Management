@@ -49,7 +49,9 @@ class User{
                 return 'wm';
             }
         }
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         $_SESSION['id'] = $res[0];
         $_SESSION['username'] = $res[1];
         $_SESSION['role'] = $res[4];
