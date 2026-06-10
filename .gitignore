@@ -1,0 +1,15 @@
+﻿# Uploads & sensitive
+uploads/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Environment variables
+.env
+ca.pem
