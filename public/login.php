@@ -21,10 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['role'] = $role;
         header("Location: index.php");
         exit;
-    } elseif ($result === "wa") {
-        $error = "No admin account found with this username.";
-    } elseif ($result === "wm") {
-        $error = "You are not a member yet. Please request to join the club.";
+    } elseif ($result === "wrong_password") {
+        $error = "Incorrect password. Please try again.";
+    } elseif ($result === "no_user") {
+        $error = "No " . ($role === 'admin' ? 'admin' : 'member') . " account found with that username.";
     } else {
         $error = "Invalid login credentials.";
     }

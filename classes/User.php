@@ -38,16 +38,21 @@ class User{
         return $res;
     }
     function login($username,$password,$role){
-        $req=$this->pdo->prepare("SELECT * from users where username=? and password=? and role=?");
-        $req->execute([$username,$password,$role]);
+        // Step 1: check if username exists with that role
+        $req=$this->pdo->prepare("SELECT * from users where username=? and role=?");
+        $req->execute([$username,$role]);
         $res=$req->fetch();
         if(!$res){
+            // Username not found for this role
             if($role=='admin'){
-                return 'wa';
+                return 'no_user';
+            } else {
+                return 'no_user';
             }
-            else{
-                return 'wm';
-            }
+        }
+        // Step 2: check password
+        if($res['password'] !== $password){
+            return 'wrong_password';
         }
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
