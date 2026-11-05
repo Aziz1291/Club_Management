@@ -14,3 +14,6 @@ RUN chown -R www-data:www-data /var/www/html/
 
 # Expose port 80
 EXPOSE 80
+
+# Show the demo notice before any application PHP endpoint runs.
+RUN printf 'php_value auto_prepend_file /var/www/html/consent.php\n' > /etc/apache2/conf-available/club-notice.conf && a2enconf club-notice

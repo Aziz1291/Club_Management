@@ -175,5 +175,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     setupToggle('confirm-field',  'toggleConfirm');
 </script>
 
+<p style="text-align:center"><a href="/public/privacy.php">Privacy &amp; cookies</a></p>
 </body>
 </html>

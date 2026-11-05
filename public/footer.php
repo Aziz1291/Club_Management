@@ -10,9 +10,9 @@
             </div>
             <div class="col-md-6">
                 <div class="terms d-flex justify-content-center justify-content-md-end">
-                    <a href="#0">Athletic Code &amp; Bylaws</a>
-                    <a href="#0">Member Safety Policy</a>
-                    <a href="#0">Privacy Statement</a>
+                    
+                    
+                    <a href="/public/privacy.php">Privacy &amp; cookies</a>
                 </div>
             </div>
         </div>
@@ -26,3 +26,4 @@
 
 </body>
 </html>
+
