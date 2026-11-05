@@ -17,3 +17,6 @@ EXPOSE 80
 
 # Show the demo notice before any application PHP endpoint runs.
 RUN printf 'php_value auto_prepend_file /var/www/html/consent.php\n' > /etc/apache2/conf-available/club-notice.conf && a2enconf club-notice
+
+# Keep demonstration and account pages out of search results.
+RUN a2enmod headers && printf 'Header always set X-Robots-Tag "noindex, nofollow"\n' > /etc/apache2/conf-available/demo-robots.conf && a2enconf demo-robots

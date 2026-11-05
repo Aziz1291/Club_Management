@@ -52,6 +52,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ClubManager is an academic club management demo for members, events and messages.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ClubManager | Academic project">
+    <meta property="og:description" content="Explore an academic club management demo for members, events and messages.">
+    <meta property="og:image" content="https://www.azizkouki.com/projects/club/assets/social-preview.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ClubManager | Academic project">
+    <meta name="twitter:description" content="An academic club management demo for members, events and messages.">
+    <meta name="twitter:image" content="https://www.azizkouki.com/projects/club/assets/social-preview.png">
     <title>Membership Application – ClubManager</title>
     <link rel="icon" type="image/png" href="../assets/favicon.png">
 
@@ -74,8 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <img src="../assets/images/logo/logo.svg" alt="Club Crest">
             </div>
             <span class="kicker">Roster Registration</span>
-            <h3>Join the Athletic Club</h3>
-            <p class="login-subtitle">Submit your details to establish a member account</p>
+            <h1 class="h3">Join the Athletic Club</h1>
+            <p class="login-subtitle">This is an academic demo. Use sample information to create a member account.</p>
         </div>
 
         <?php if ($error): ?>

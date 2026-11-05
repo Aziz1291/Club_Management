@@ -34,6 +34,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ClubManager is an academic club management demo for members, events and messages.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ClubManager | Academic project">
+    <meta property="og:description" content="Explore an academic club management demo for members, events and messages.">
+    <meta property="og:image" content="https://www.azizkouki.com/projects/club/assets/social-preview.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ClubManager | Academic project">
+    <meta name="twitter:description" content="An academic club management demo for members, events and messages.">
+    <meta name="twitter:image" content="https://www.azizkouki.com/projects/club/assets/social-preview.png">
     <title>Sign In – ClubManager</title>
     <link rel="icon" type="image/png" href="../assets/favicon.png">
 
@@ -56,8 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <img src="../assets/images/logo/logo.svg" alt="Club Crest">
             </div>
             <span class="kicker">Collegiate Athletics</span>
-            <h3>Portal Sign In</h3>
-            <p class="login-subtitle">Access your roster, events, and communications</p>
+            <h1 class="h3">Portal Sign In</h1>
+            <p class="login-subtitle">Academic demo: explore members, events, and messages. Use sample information only.</p>
         </div>
 
         <?php if ($error): ?>
@@ -71,14 +81,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- USERNAME -->
             <div class="form-group">
                 <label class="form-label" for="username-field">Username</label>
-                <input type="text" id="username-field" name="username" class="form-control" placeholder="Enter your username" value="<?= htmlspecialchars($username) ?>" required autofocus>
+                <input type="text" id="username-field" name="username" autocomplete="username" class="form-control" placeholder="Enter your username" value="<?= htmlspecialchars($username) ?>" required autofocus>
             </div>
 
             <!-- PASSWORD -->
             <div class="form-group">
                 <label class="form-label" for="password-field">Password</label>
                 <div class="password-wrapper">
-                    <input type="password" name="password" id="password-field" class="form-control" placeholder="Enter your password" required>
+                    <input type="password" name="password" autocomplete="current-password" id="password-field" class="form-control" placeholder="Enter your password" required>
                     <button type="button" class="password-toggle" id="togglePassword" aria-label="Toggle password visibility">
                         <i class="lni lni-eye"></i>
                     </button>
@@ -113,14 +123,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <span class="demo-account-pill__role role-admin"><i class="lni lni-shield"></i> Athletic Director</span>
                             <span class="demo-account-pill__name">Admin Officer (<code>admin</code>)</span>
                         </div>
-                        <button type="button" class="demo-account-pill__btn" onclick="fillClubDemo('admin', 'admin123', 'admin')">Use</button>
+                        <button type="button" class="demo-account-pill__btn" aria-label="Fill administrator demo credentials" onclick="fillClubDemo('admin', 'admin123', 'admin')">Use</button>
                     </div>
                     <div class="demo-account-pill">
                         <div class="demo-account-pill__info">
                             <span class="demo-account-pill__role role-member"><i class="lni lni-user"></i> Varsity Athlete</span>
                             <span class="demo-account-pill__name">Karim Athlete (<code>member1</code>)</span>
                         </div>
-                        <button type="button" class="demo-account-pill__btn" onclick="fillClubDemo('member1', 'member123', 'member')">Use</button>
+                        <button type="button" class="demo-account-pill__btn" aria-label="Fill member demo credentials" onclick="fillClubDemo('member1', 'member123', 'member')">Use</button>
                     </div>
                 </div>
             </div>

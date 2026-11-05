@@ -13,6 +13,16 @@ require_once __DIR__ . '/../auth.php';
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="ClubManager is an academic club management demo for members, events and messages.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ClubManager | Academic project">
+    <meta property="og:description" content="Explore an academic club management demo for members, events and messages.">
+    <meta property="og:image" content="https://www.azizkouki.com/projects/club/assets/social-preview.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ClubManager | Academic project">
+    <meta name="twitter:description" content="An academic club management demo for members, events and messages.">
+    <meta name="twitter:image" content="https://www.azizkouki.com/projects/club/assets/social-preview.png">
     <title>ClubManager – Collegiate Athletics</title>
     <link rel="icon" type="image/png" href="../assets/favicon.png">
 
@@ -47,12 +57,12 @@ require_once __DIR__ . '/../auth.php';
                     <div class="header-search d-none d-md-flex">
                         <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
                             <form action="members.php" method="GET">
-                                <input type="text" name="q" placeholder="Search athletes, events..." />
+                                <input type="text" name="q" aria-label="Search athletes" placeholder="Search athletes, events..." />
                                 <button type="submit" aria-label="Search"><i class="lni lni-search-alt"></i></button>
                             </form>
                         <?php else: ?>
                             <form action="events.php" method="GET">
-                                <input type="text" name="q" placeholder="Search events, meets..." />
+                                <input type="text" name="q" aria-label="Search events" placeholder="Search events, meets..." />
                                 <button type="submit" aria-label="Search"><i class="lni lni-search-alt"></i></button>
                             </form>
                         <?php endif; ?>
