@@ -1,40 +1,73 @@
-<style><?php include('../assets/css/editAnn.css');?></style>
-<?php
+<?php 
+require_once __DIR__.'/../auth.php'; 
+require_admin(); 
+include("header.php");
 require_once('../classes/Announcement.php');
-$a = new Announcement();
-$an = $a->getAnn($_POST['id']);
 require_once('../classes/Admin.php');
+
+$annId = $_POST['id'] ?? $_GET['id'] ?? 0;
+$a = new Announcement();
+$an = $a->getAnn($annId);
+
+if (!$an) {
+    echo "<div class='container py-5'><div class='club-alert club-alert-danger'>Announcement not found. <a href='announcements.php'>Return to announcements</a>.</div></div>";
+    include("footer.php");
+    exit;
+}
+
 $u = new Admin();
-$us = $u->listAdmin();
-echo "
-<form action='../actions/editAnn.php' method='POST'>
-    <input type='hidden' name='id' value='$an[0]'>
-    
-    <div class='form-group'>
-        <label for='title' class='form-label'>Announcement Title</label>
-        <input type='text' id='title' name='title' class='form-control' value='$an[1]' required>
-    </div>
-    
-    <div class='form-group'>
-        <label for='content' class='form-label'>Announcement Content</label>
-        <textarea id='content' name='desc' class='form-control' rows='5' required>$an[2]</textarea>
-    </div>
-    
-    <div class='form-group'>
-        <label for='admin_id' class='form-label'>Posted By</label>
-        <select id='admin_id' name='idA' class='form-control' required>
-            <option value=''>Select User</option>";
-            
-            foreach($us as $user) {echo "<option value='$user[0]' $selected>$user[1] ($user[4])</option>";}
-                
-            
-            
-echo "  </select>
-    </div>
-    
-    <div class='form-actions'>
-        <a href='announcements.php'><button type='button' class='btn-cancel' >Cancel</button></a>
-        <button type='submit' class='btn-save'>Save Changes</button>
-    </div>
-</form>";
+$admins = $u->listAdmin();
+$title = htmlspecialchars($an[1] ?? '');
+$desc = htmlspecialchars($an[2] ?? '');
+$authorId = $an[3] ?? 0;
 ?>
+
+<link rel="stylesheet" href="../assets/css/editAnn.css">
+
+<section class="section">
+    <div class="container-fluid">
+        <div class="ann-form-container">
+            <div class="ann-form-card">
+                <div class="form-header">
+                    <span class="kicker">Club Dispatches</span>
+                    <h2>Edit Announcement #ANN-<?= htmlspecialchars((string)$an[0]) ?></h2>
+                </div>
+
+                <form action="../actions/editAnn.php" method="POST">
+                    <input type="hidden" name="id" value="<?= htmlspecialchars((string)$an[0]) ?>">
+
+                    <div class="form-group">
+                        <label for="ann-title" class="form-label">Announcement Headline</label>
+                        <input type="text" id="ann-title" name="title" class="form-control" value="<?= $title ?>" required autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ann-content" class="form-label">Dispatch Brief / Content</label>
+                        <textarea id="ann-content" name="desc" class="form-control" rows="5" required><?= $desc ?></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="admin_id" class="form-label">Publishing Authority / Director</label>
+                        <select id="admin_id" name="idA" class="form-control" required>
+                            <option value="">Select an administrator...</option>
+                            <?php foreach ($admins as $user): ?>
+                                <option value="<?= htmlspecialchars((string)$user[0]) ?>" <?= $user[0] == $authorId ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($user[1]) ?> (<?= ucfirst(htmlspecialchars($user[4])) ?>)
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="announcements.php" class="btn-cancel">Cancel</a>
+                        <button type="submit" class="btn-save">
+                            <i class="lni lni-checkmark me-1"></i> Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<?php include("footer.php"); ?>

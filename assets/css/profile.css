@@ -1,223 +1,247 @@
-/* ============================================================
-   Profile Page Styles — ClubManager
-   ============================================================ */
+/* ==========================================================================
+   ClubManager — Athlete Dossier & Profile Styles
+   Gold Standard Benchmark: CV-and-Portfolio (Athletic Collegiate Craft)
+   ========================================================================== */
+
+@import url('club-tokens.css');
 
 .profile-card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
-    padding: 40px;
-    margin: 30px auto;
-    max-width: 760px;
-    border: 1px solid #f1f5f9;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 36px clamp(20px, 4vw, 44px);
+  margin: 10px auto 40px;
+  max-width: 760px;
 }
 
-/* ── Header ─────────────────────────────────────────────── */
 .profile-header {
-    text-align: center;
-    margin-bottom: 36px;
-    padding-bottom: 28px;
-    border-bottom: 1px solid #f1f5f9;
+  text-align: center;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
 }
 
-/* ── Avatar ─────────────────────────────────────────────── */
 .profile-image-container {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 18px;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 16px;
 }
 
 .profile-image {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid #e2e8f0;
-    display: block;
-    transition: border-color 0.3s ease, transform 0.3s ease;
+  width: 130px;
+  height: 130px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 3px solid var(--line);
+  display: block;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
 }
 
 .profile-image-container:hover .profile-image {
-    border-color: #3b82f6;
-    transform: scale(1.03);
+  border-color: var(--accent);
+  transform: scale(1.02);
 }
 
-/* Overlay label — covers the avatar, triggers the file input */
 .profile-image-overlay {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: rgba(15, 23, 42, 0.55);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    cursor: pointer;
-    gap: 6px;
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-full);
+  background: rgba(28, 25, 23, 0.65);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  cursor: pointer;
+  gap: 4px;
 }
 
 .profile-image-container:hover .profile-image-overlay {
-    opacity: 1;
+  opacity: 1;
+}
+
+.btn-change-photo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  background-color: var(--tint);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-change-photo-badge:hover {
+  background-color: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+.btn-change-photo-badge:active {
+  transform: scale(0.97);
 }
 
 .profile-image-overlay i {
-    color: white;
-    font-size: 22px;
+  color: #ffffff;
+  font-size: 1.4rem;
 }
 
 .profile-image-overlay span {
-    color: white;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
-/* The actual file input — hidden, triggered by the label */
 #profile-image-input {
-    display: none;
+  display: none;
 }
 
-/* ── Name / Role ─────────────────────────────────────────── */
 .profile-name {
-    font-size: 26px;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 6px;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+  margin-bottom: 4px;
 }
 
 .profile-role {
-    font-size: 15px;
-    color: #64748b;
-    text-transform: capitalize;
-    margin-bottom: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-transform: capitalize;
+  margin-bottom: 0;
 }
 
-/* ── Form ────────────────────────────────────────────────── */
 .profile-form {
-    max-width: 620px;
-    margin: 0 auto;
+  max-width: 620px;
+  margin: 0 auto;
 }
 
 .form-group {
-    margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
 .form-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #475569;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 0.85rem;
 }
 
 .form-control {
-    width: 100%;
-    padding: 11px 15px;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    background-color: #f8fafc;
-    font-size: 14px;
-    color: #334155;
-    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background-color: var(--surface);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--ink);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .form-control:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
-    background: white;
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
 }
 
-.form-control:disabled {
-    background-color: #f1f5f9;
-    color: #94a3b8;
-    cursor: not-allowed;
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: var(--tint);
+  color: var(--muted);
+  cursor: not-allowed;
 }
 
-input[type="file"].form-control {
-    padding: 8px 12px;
-    cursor: pointer;
-}
-
-.text-muted {
-    font-size: 12px;
-    color: #94a3b8;
-    margin-top: 5px;
-    display: block;
-}
-
-/* ── Buttons ─────────────────────────────────────────────── */
 .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 14px;
-    margin-top: 32px;
-    padding-top: 22px;
-    border-top: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
 }
 
 .btn-cancel {
-    background: #f1f5f9;
-    color: #64748b;
-    border: none;
-    padding: 11px 24px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-    text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  color: var(--muted);
+  border: 1px solid var(--line);
+  padding: 9px 20px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-fast);
 }
 
 .btn-cancel:hover {
-    background: #e2e8f0;
-    color: #334155;
+  background: var(--tint);
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.btn-cancel:active {
+  transform: scale(0.97);
 }
 
 .btn-save {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: white;
-    border: none;
-    padding: 11px 28px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: #ffffff;
+  border: 1px solid var(--accent);
+  padding: 9px 26px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
 }
 
 .btn-save:hover {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+  background-color: var(--accent-dark);
+  border-color: var(--accent-dark);
 }
 
-/* ── Flash messages ──────────────────────────────────────── */
+.btn-save:active {
+  transform: scale(0.97);
+}
+
 .flash-success,
 .flash-error {
-    padding: 14px 20px;
-    border-radius: 10px;
-    margin-bottom: 24px;
-    font-size: 14px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .flash-success {
-    background: #dcfce7;
-    color: #166534;
-    border: 1px solid #bbf7d0;
+  background-color: var(--success-bg);
+  color: var(--success-ink);
+  border: 1px solid var(--success-border);
 }
 
 .flash-error {
-    background: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
+  background-color: var(--danger-bg);
+  color: var(--danger-ink);
+  border: 1px solid var(--danger-border);
 }

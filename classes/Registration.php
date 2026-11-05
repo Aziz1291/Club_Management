@@ -9,17 +9,43 @@ class Registration{
         $cnx=new connexion();
         $this->pdo=$cnx->Cnx();
     }
-    function registerToEvent($idM,$event_id){
-        $req=$this->pdo->prepare("INSERT into registrations(member_id,event_id) values(?,?)");
-        $req->execute([$idM,$event_id]);
+    function isRegistered($member_id, $event_id) {
+        $req = $this->pdo->prepare("SELECT COUNT(*) FROM registrations WHERE member_id = ? AND event_id = ?");
+        $req->execute([(int)$member_id, (int)$event_id]);
+        return ((int)$req->fetchColumn()) > 0;
     }
-    function cancelRegistration($id){
-        $req=$this->pdo->prepare("DELETE from registrations where id=?");
-        $req->execute([$id]);
+    function getRegisteredEventIds($member_id) {
+        $req = $this->pdo->prepare("SELECT event_id FROM registrations WHERE member_id = ?");
+        $req->execute([(int)$member_id]);
+        return $req->fetchAll(PDO::FETCH_COLUMN, 0) ?: [];
+    }
+    function registerToEvent($idM,$event_id){
+        if ($this->isRegistered($idM, $event_id)) {
+            return false;
+        }
+        $req=$this->pdo->prepare("INSERT into registrations(member_id,event_id) values(?,?)");
+        return $req->execute([(int)$idM, (int)$event_id]);
+    }
+    function cancelRegistration($id,$member_id){
+        $req=$this->pdo->prepare("DELETE from registrations where id=? and member_id=?");
+        return $req->execute([(int)$id, (int)$member_id]);
     }
     function getRegistrations($id){
-        $req=$this->pdo->prepare("SELECT e.*,r.id from registrations r join events e on  r.event_id=e.id where r.member_id=?");
-        $req->execute([$id]);
+        $req=$this->pdo->prepare("SELECT 
+            e.id AS event_id,
+            e.title,
+            e.description,
+            e.date,
+            e.location,
+            e.admin_Id,
+            e.created_at AS event_created_at,
+            r.id AS registration_id,
+            r.created_at AS registration_created_at
+            FROM registrations r 
+            JOIN events e ON r.event_id = e.id 
+            WHERE r.member_id = ?
+            ORDER BY e.date ASC");
+        $req->execute([(int)$id]);
         return $req;
     }
 }

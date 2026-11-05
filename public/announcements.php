@@ -1,80 +1,89 @@
-<?php include('header.php'); ?>
-<style>
-<?php include('../assets/css/announcements.css');?>
-</style>
+<?php 
+include('header.php'); 
+require_once('../classes/Announcement.php');
+require_once('../classes/User.php');
 
-<div class='announcements-page'>
-    <div class='page-header'>
-        <h1 class='page-title'>Club Announcements</h1>
-        <p class='page-subtitle'>Stay updated with the latest news and important updates from the club administration.</p>
-        <a href="addAnn.php"><button class='add-announcement-btn'>
-            <i class='fas fa-plus'></i>
-            Add New Announcement
-        </button></a>
-    </div>
+$a = new Announcement();
+$u = new User();
+$as = $a->displayAnn();
+?>
 
-    <div class='announcements-grid'>
-        <?php
-        require_once('../classes/Announcement.php');
-        require_once('../classes/User.php');
-        
-        $a = new Announcement();
-        $u = new User();
-        $as = $a->displayAnn();
-        
-        if(empty($as)) {
-            echo "
-            <div class='no-announcements'>
-                <i class='fas fa-bullhorn'></i>
-                <h3>No Announcements Yet</h3>
-                <p>Be the first to create an announcement for the club.</p>
-            </div>";
-        } else {
-            foreach($as as $an) {
-                $ad = $u->getUser($an[3]);
-                echo "
-                <div class='announcement-card'>
-                    <span class='announcement-id'>#$an[0]</span>
-                    <div class='announcement-header'>
-                        <div>
-                            <h3 class='announcement-title'>$an[1]</h3>
-                        </div>
+<link rel="stylesheet" href="../assets/css/announcements.css">
+
+<section class="section">
+    <div class="container-fluid">
+        <div class="announcements-page">
+            <div class="page-header">
+                <div>
+                    <span class="kicker">Club Dispatches</span>
+                    <h1 class="page-title">Official Announcements</h1>
+                    <p class="page-subtitle">Official directives, schedule updates, and club announcements from administration.</p>
+                </div>
+                <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                    <a href="addAnn.php" class="add-announcement-btn">
+                        <i class="lni lni-plus"></i> Post Announcement
+                    </a>
+                <?php endif; ?>
+            </div>
+
+            <div class="announcements-grid">
+                <?php if (empty($as)): ?>
+                    <div class="no-announcements">
+                        <i class="lni lni-bullhorn"></i>
+                        <h3>No Announcements Yet</h3>
+                        <p>Be the first to publish a collegiate announcement for the club.</p>
                     </div>
-                    
-                    <p class='announcement-content'>$an[2]</p>
-                    
-                    <div class='announcement-admin'>
-                        <div class='admin-avatar'>
-                            <img src='$ad[5]' class='profile-img' alt='Admin Avatar'>
+                <?php else: ?>
+                    <?php foreach ($as as $an): ?>
+                        <?php 
+                        $ad = $u->getUser($an[3]); 
+                        $authorPic = get_avatar_url($ad[5] ?? '');
+                        $authorName = htmlspecialchars($ad[1] ?? 'Administrator');
+                        $authorRole = htmlspecialchars($ad[4] ?? 'Admin');
+                        $title = htmlspecialchars($an[1] ?? '');
+                        $content = nl2br(htmlspecialchars($an[2] ?? ''));
+                        $id = htmlspecialchars((string)$an[0]);
+                        ?>
+                        <div class="announcement-card">
+                            <span class="announcement-id">#ANN-<?= $id ?></span>
+                            <div class="announcement-header">
+                                <h3 class="announcement-title"><?= $title ?></h3>
+                            </div>
+                            
+                            <p class="announcement-content"><?= $content ?></p>
+                            
+                            <div class="announcement-admin">
+                                <div class="admin-avatar">
+                                    <img src="<?= $authorPic ?>" alt="<?= $authorName ?>" onerror="this.src='../assets/images/profilee.jpg'">
+                                </div>
+                                <div class="admin-info">
+                                    <h4><?= $authorName ?></h4>
+                                    <p><?= $authorRole ?></p>
+                                </div>
+                            </div>
+                            
+                            <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                                <div class="announcement-actions">
+                                    <form action="editAnn.php" method="POST" class="d-inline">
+                                        <input type="hidden" value="<?= $id ?>" name="id">
+                                        <button type="submit" class="btn-edit">
+                                            <i class="lni lni-pencil"></i> Edit
+                                        </button>
+                                    </form>
+                                    <form action="../actions/deleteAnn.php" method="POST" class="d-inline" onsubmit="return confirm('Delete this bulletin?');">
+                                        <input type="hidden" value="<?= $id ?>" name="id">
+                                        <button type="submit" class="btn-delete">
+                                            <i class="lni lni-trash-can"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            <?php endif; ?>
                         </div>
-                        <div class='admin-info'>
-                            <h4>$ad[1]</h4>
-                            <p>$ad[4]</p>
-                        </div>
-                    </div>
-                    
-                    <div class='announcement-actions'>
-                    <form action='editAnn.php' method='POST'>
-                    <input type='hidden' value='$an[0]' name='id'>
-                        <button type='submit' class='btn-edit'>
-                            <i class='fas fa-edit'></i>
-                            Edit
-                        </button>
-                    </form>
-                    <form action='../actions/deleteAnn.php' method='POST'>
-                        <input type='hidden' value='$an[0]' name='id'>
-                        <button type='submit' class='btn-delete'>
-                            <i class='fas fa-trash'></i>
-                            Delete
-                        </button>
-                    </form>
-                    </div>
-                </div>";
-            }
-        }
-        ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
     </div>
-    
-</div>
+</section>
 
 <?php include('footer.php'); ?>

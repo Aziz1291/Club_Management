@@ -1,24 +1,22 @@
 <footer class="footer">
     <div class="container-fluid">
-        <div class="row">
+        <div class="row align-items-center">
             <div class="col-md-6 order-last order-md-first">
                 <div class="copyright text-center text-md-start">
-                    <p class="text-sm">
-                        Club Management System © 2025
+                    <p>
+                        <strong>ClubManager</strong> &copy; <?= date('Y') ?> &bull; Collegiate Athletic Federation &bull; Division League
                     </p>
                 </div>
             </div>
-            <!-- end col-->
             <div class="col-md-6">
                 <div class="terms d-flex justify-content-center justify-content-md-end">
-                    <a href="#0" class="text-sm">Term & Conditions</a>
-                    <a href="#0" class="text-sm ml-15">Privacy & Policy</a>
+                    <a href="#0">Athletic Code &amp; Bylaws</a>
+                    <a href="#0">Member Safety Policy</a>
+                    <a href="#0">Privacy Statement</a>
                 </div>
             </div>
         </div>
-        <!-- end row -->
     </div>
-    <!-- end container -->
 </footer>
 
 </main>

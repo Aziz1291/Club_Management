@@ -1,0 +1,361 @@
+/* ==========================================================================
+   ClubManager — Central Design System & Token Foundation
+   Gold Standard Benchmark: CV-and-Portfolio (Athletic Collegiate Craft)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* Canvas & Surface Tokens */
+  --bg: #fafaf9;              /* Warm stone / limestone */
+  --surface: #ffffff;         /* Crisp pure white */
+  --surface-raised: #ffffff;  /* Elevated dropdowns & flyouts */
+  --tint: #f1f3f7;            /* Soft cool stone tint */
+  --tint-subtle: #f8fafc;     /* Subtle row hover */
+  
+  /* Text & Ink Tokens */
+  --ink: #1c1917;             /* Deep warm graphite */
+  --ink-secondary: #44403c;   /* Structural headings */
+  --muted: #57534e;           /* Warm stone secondary text (>= 4.6:1 contrast) */
+  --subtle: #78716c;          /* Helper text, meta captions */
+  --line: #e2e2df;            /* 1px hairline border */
+  --line-strong: #d6d3d1;     /* Emphasized structural dividers */
+
+  /* Varsity Ultramarine Core */
+  --accent: #1d4ed8;          /* Royal ultramarine varsity blue */
+  --accent-dark: #1e3a8a;     /* Deep navy ultramarine */
+  --accent-light: #dbeafe;    /* Soft blue tint */
+  --accent-subtle: rgba(29, 78, 216, 0.08);
+
+  /* Contextual Athletic Palette */
+  --olive-bg: #d7dcbd;        --olive-ink: #5d6b43;   /* Turf / Active */
+  --clay-bg: #eccdb4;         --clay-ink: #b1532f;    /* Court / Alert / Pending */
+  --sea-bg: #c3dcd6;          --sea-ink: #2f6f73;     /* Aquatic / Info / Verified */
+
+  /* Status Tokens */
+  --success-bg: #dcfce7;      --success-ink: #15803d; --success-border: #86efac;
+  --danger-bg: #fee2e2;       --danger-ink: #b91c1c;  --danger-border: #fca5a5;
+  --warning-bg: #fef3c7;      --warning-ink: #b45309; --warning-border: #fcd34d;
+
+  /* Typography */
+  --font-sans: 'Outfit', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  /* Radii & Dimensions */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+  --sidebar-w: 260px;
+  --header-h: 68px;
+
+  /* Elevation (Crafted, No Blurry Heavy Shadows) */
+  --shadow-flat: none;
+  --shadow-card: 0 1px 3px rgba(28, 25, 23, 0.04);
+  --shadow-hover: 0 4px 12px rgba(28, 25, 23, 0.06);
+  --shadow-dropdown: 0 10px 25px -5px rgba(28, 25, 23, 0.1), 0 4px 6px -2px rgba(28, 25, 23, 0.05);
+
+  /* Transitions */
+  --transition-fast: 0.12s ease;
+  --transition-normal: 0.2s ease;
+}
+
+/* Base Resets */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--ink);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  margin-top: 0;
+}
+
+h1 { font-size: clamp(1.85rem, 3.2vw, 2.4rem); font-weight: 700; }
+h2 { font-size: clamp(1.4rem, 2.2vw, 1.85rem); font-weight: 600; }
+h3 { font-size: 1.2rem; font-weight: 600; }
+h4 { font-size: 1rem; font-weight: 600; }
+
+p {
+  margin-top: 0;
+  margin-bottom: 0.85rem;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--accent-dark);
+}
+
+/* Accessibility Focus Ring */
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+/* Athletic Kicker & Meta */
+.kicker {
+  display: inline-block;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.kicker-subtle {
+  color: var(--subtle);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.tabular-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Contextual Tones */
+.tone-olive {
+  background-color: var(--olive-bg);
+  color: var(--olive-ink);
+  border: 1px solid rgba(93, 107, 67, 0.25);
+}
+
+.tone-clay {
+  background-color: var(--clay-bg);
+  color: var(--clay-ink);
+  border: 1px solid rgba(177, 83, 47, 0.25);
+}
+
+.tone-sea {
+  background-color: var(--sea-bg);
+  color: var(--sea-ink);
+  border: 1px solid rgba(47, 111, 115, 0.25);
+}
+
+/* Badges & Pills */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.pill-admin {
+  background-color: var(--accent-light);
+  color: var(--accent-dark);
+  border: 1px solid #bfdbfe;
+}
+
+.pill-member {
+  background-color: var(--olive-bg);
+  color: var(--olive-ink);
+  border: 1px solid rgba(93, 107, 67, 0.25);
+}
+
+/* Tactile Physical Buttons */
+.btn-club {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 18px;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.btn-club:active {
+  transform: scale(0.97);
+}
+
+.btn-club-primary {
+  background-color: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+.btn-club-primary:hover {
+  background-color: var(--accent-dark);
+  border-color: var(--accent-dark);
+  color: #ffffff;
+}
+
+.btn-club-secondary {
+  background-color: var(--surface);
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.btn-club-secondary:hover {
+  border-color: var(--line-strong);
+  background-color: var(--tint);
+  color: var(--ink);
+}
+
+.btn-club-danger {
+  background-color: var(--surface);
+  color: var(--danger-ink);
+  border-color: var(--danger-border);
+}
+
+.btn-club-danger:hover {
+  background-color: var(--danger-bg);
+  border-color: var(--danger-ink);
+}
+
+.btn-club-sm {
+  min-height: 34px;
+  padding: 5px 12px;
+  font-size: 0.84rem;
+}
+
+/* Clean Cards */
+.club-card {
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal), transform var(--transition-normal);
+}
+
+.club-card-hover:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+/* Structured Form Controls */
+.club-form-group {
+  margin-bottom: 20px;
+}
+
+.club-form-label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.club-form-control {
+  width: 100%;
+  padding: 10px 14px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--ink);
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.club-form-control:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.club-form-control:disabled,
+.club-form-control[readonly] {
+  background-color: var(--tint);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+/* High-Density Data Tables */
+.club-table-wrap {
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+}
+
+.club-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  text-align: left;
+}
+
+.club-table th {
+  background-color: var(--tint);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.club-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  vertical-align: middle;
+}
+
+.club-table tbody tr:hover {
+  background-color: var(--tint-subtle);
+}
+
+.club-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Alerts */
+.club-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  font-size: 0.92rem;
+  margin-bottom: 20px;
+}
+
+.club-alert-success {
+  background-color: var(--success-bg);
+  color: var(--success-ink);
+  border: 1px solid var(--success-border);
+}
+
+.club-alert-danger {
+  background-color: var(--danger-bg);
+  color: var(--danger-ink);
+  border: 1px solid var(--danger-border);
+}

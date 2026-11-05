@@ -1,5 +1,7 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // If already logged in, redirect to dashboard
 if (isset($_SESSION['username'])) {
@@ -23,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($username) || empty($email) || empty($password) || empty($confirm)) {
         $error = 'All fields are required.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = 'Please enter a valid email address.';
+        $error = 'Please enter a valid collegiate email address.';
     } elseif (strlen($password) < 6) {
         $error = 'Password must be at least 6 characters.';
     } elseif ($password !== $confirm) {
@@ -35,10 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $checkUser = $user->pdo->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
         $checkUser->execute([$username, $email]);
         if ($checkUser->fetch()) {
-            $error = 'That username or email is already taken. Please choose another.';
+            $error = 'That username or email is already registered. Please choose another or sign in.';
         } else {
             $user->addUser($username, $email, $password, 'member');
-            $success = 'Your account has been created! You can now sign in as a member.';
+            $success = 'Your membership account has been established. You may now sign in as an athlete member.';
             $username = '';
             $email    = '';
         }
@@ -50,28 +52,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join the Club – Club Management</title>
+    <title>Membership Application – ClubManager</title>
     <link rel="icon" type="image/png" href="../assets/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/lineicons.css">
-    <link rel="stylesheet" href="../assets/css/main.css">
-    <style>
-        <?php include('../assets/css/login.css'); ?>
-
-        .alert-success {
-            background: #f0fdf4;
-            color: #16a34a;
-            border: 1px solid #bbf7d0;
-            border-radius: 12px;
-            padding: 12px 16px;
-            margin-bottom: 20px;
-        }
-        .form-text {
-            font-size: 12px;
-            color: #94a3b8;
-            margin-top: 4px;
-        }
-    </style>
+    <link rel="stylesheet" href="../assets/css/club-tokens.css">
+    <link rel="stylesheet" href="../assets/css/login.css">
 </head>
 
 <body>
@@ -80,24 +71,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="login-card">
         <div class="login-header">
             <div class="logo">
-                <img src="../assets/images/logo/logo.svg" alt="Club Management">
+                <img src="../assets/images/logo/logo.svg" alt="Club Crest">
             </div>
-            <h3>Join the Club</h3>
-            <p class="login-subtitle">Create your member account</p>
+            <span class="kicker">Roster Registration</span>
+            <h3>Join the Athletic Club</h3>
+            <p class="login-subtitle">Submit your details to establish a member account</p>
         </div>
 
         <?php if ($error): ?>
-            <div class="alert alert-danger text-center">
-                <i class="lni lni-warning"></i> <?= htmlspecialchars($error) ?>
+            <div class="alert alert-danger" role="alert">
+                <i class="lni lni-warning"></i>
+                <span><?= htmlspecialchars($error) ?></span>
             </div>
         <?php endif; ?>
 
         <?php if ($success): ?>
-            <div class="alert-success text-center">
-                <i class="lni lni-checkmark-circle"></i> <?= htmlspecialchars($success) ?>
-                <div style="margin-top:12px;">
-                    <a href="login.php" class="btn btn-primary btn-login" style="display:inline-block;width:auto;padding:10px 30px;text-decoration:none;">
-                        Sign In Now
+            <div class="alert alert-success" role="alert">
+                <i class="lni lni-checkmark-circle"></i>
+                <div>
+                    <p class="mb-2"><strong>Application Approved!</strong> <?= htmlspecialchars($success) ?></p>
+                    <a href="login.php" class="btn btn-login" style="display:inline-flex; width:auto; padding:8px 24px;">
+                        Proceed to Sign In &rarr;
                     </a>
                 </div>
             </div>
@@ -106,57 +100,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="POST">
             <!-- USERNAME -->
             <div class="form-group">
-                <label class="form-label">Username</label>
-                <input type="text" name="username" class="form-control"
-                       placeholder="Choose a username"
-                       value="<?= htmlspecialchars($username) ?>" required>
+                <label class="form-label" for="username-input">Athlete Username</label>
+                <input type="text" id="username-input" name="username" class="form-control"
+                       placeholder="e.g. j_miller"
+                       value="<?= htmlspecialchars($username) ?>" required autofocus>
             </div>
 
             <!-- EMAIL -->
             <div class="form-group">
-                <label class="form-label">Email Address</label>
-                <input type="email" name="email" class="form-control"
-                       placeholder="your@email.com"
+                <label class="form-label" for="email-input">Collegiate Email Address</label>
+                <input type="email" id="email-input" name="email" class="form-control"
+                       placeholder="athlete@university.edu"
                        value="<?= htmlspecialchars($email) ?>" required>
             </div>
 
             <!-- PASSWORD -->
             <div class="form-group">
-                <label class="form-label">Password</label>
+                <label class="form-label" for="password-field">Password</label>
                 <div class="password-wrapper">
                     <input type="password" name="password" id="password-field" class="form-control"
                            placeholder="At least 6 characters" required>
-                    <button type="button" class="password-toggle" id="togglePassword">
+                    <button type="button" class="password-toggle" id="togglePassword" aria-label="Toggle password visibility">
                         <i class="lni lni-eye"></i>
                     </button>
                 </div>
-                <p class="form-text">Minimum 6 characters</p>
+                <p class="form-text">Minimum 6 characters &bull; alphanumeric recommended</p>
             </div>
 
             <!-- CONFIRM PASSWORD -->
             <div class="form-group">
-                <label class="form-label">Confirm Password</label>
+                <label class="form-label" for="confirm-field">Confirm Password</label>
                 <div class="password-wrapper">
                     <input type="password" name="confirm" id="confirm-field" class="form-control"
-                           placeholder="Repeat your password" required>
-                    <button type="button" class="password-toggle" id="toggleConfirm">
+                           placeholder="Re-enter password" required>
+                    <button type="button" class="password-toggle" id="toggleConfirm" aria-label="Toggle confirm password visibility">
                         <i class="lni lni-eye"></i>
                     </button>
                 </div>
             </div>
 
             <!-- SUBMIT -->
-            <button type="submit" class="btn btn-primary btn-login">
-                <i class="lni lni-user me-2"></i> Create Account
+            <button type="submit" class="btn btn-login">
+                <i class="lni lni-checkmark"></i> Submit Application
             </button>
         </form>
 
         <?php endif; ?>
 
         <div class="login-footer">
-            <p>Already have an account?</p>
+            <p>Already an enrolled club member?</p>
             <a href="login.php">
-                <i class="lni lni-enter me-1"></i> Sign in here
+                <i class="lni lni-enter"></i> Sign in with existing credentials
             </a>
         </div>
     </div>

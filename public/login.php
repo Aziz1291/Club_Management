@@ -1,51 +1,50 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include_once('../classes/User.php');
 
 $error = '';
 $username = '';
 $password = '';
-$role = '';
+$role = 'member';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
-    $role     = $_POST['role'];
+    $username = trim($_POST['username'] ?? '');
+    $password = trim($_POST['password'] ?? '');
+    $role     = $_POST['role'] ?? 'member';
 
     $user = new User();
     $result = $user->login($username, $password, $role);
 
     if ($result === "success") {
-        $_SESSION['username'] = $username;
-        $_SESSION['role'] = $role;
         header("Location: index.php");
         exit;
     } elseif ($result === "wrong_password") {
-        $error = "Incorrect password. Please try again.";
+        $error = "Incorrect password. Please verify credentials.";
     } elseif ($result === "no_user") {
-        $error = "No " . ($role === 'admin' ? 'admin' : 'member') . " account found with that username.";
+        $error = "No " . ($role === 'admin' ? 'administrator' : 'member') . " account found with that username.";
     } else {
         $error = "Invalid login credentials.";
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login – Club Management</title>
+    <title>Sign In – ClubManager</title>
     <link rel="icon" type="image/png" href="../assets/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/lineicons.css">
-    <link rel="stylesheet" href="../assets/css/main.css">
-    
-    <style>
-        <?php include('../assets/css/login.css');?>
-    </style>
+    <link rel="stylesheet" href="../assets/css/club-tokens.css">
+    <link rel="stylesheet" href="../assets/css/login.css">
 </head>
 
 <body>
@@ -54,31 +53,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="login-card">
         <div class="login-header">
             <div class="logo">
-                <img src="../assets/images/logo/logo.svg" alt="Club Management">
+                <img src="../assets/images/logo/logo.svg" alt="Club Crest">
             </div>
-            <h3>Welcome Back</h3>
-            <p class="login-subtitle">Sign in to your account</p>
+            <span class="kicker">Collegiate Athletics</span>
+            <h3>Portal Sign In</h3>
+            <p class="login-subtitle">Access your roster, events, and communications</p>
         </div>
 
         <?php if ($error): ?>
-            <div class="alert alert-danger text-center">
-                <i class="lni lni-warning"></i> <?= $error ?>
+            <div class="alert alert-danger" role="alert">
+                <i class="lni lni-warning"></i>
+                <span><?= htmlspecialchars($error) ?></span>
             </div>
         <?php endif; ?>
 
         <form method="POST">
             <!-- USERNAME -->
             <div class="form-group">
-                <label class="form-label">Username</label>
-                <input type="text" name="username" class="form-control" placeholder="Enter your username" value="<?= htmlspecialchars($username) ?>" required>
+                <label class="form-label" for="username-field">Username</label>
+                <input type="text" id="username-field" name="username" class="form-control" placeholder="Enter your username" value="<?= htmlspecialchars($username) ?>" required autofocus>
             </div>
 
             <!-- PASSWORD -->
             <div class="form-group">
-                <label class="form-label">Password</label>
+                <label class="form-label" for="password-field">Password</label>
                 <div class="password-wrapper">
                     <input type="password" name="password" id="password-field" class="form-control" placeholder="Enter your password" required>
-                    <button type="button" class="password-toggle" id="togglePassword">
+                    <button type="button" class="password-toggle" id="togglePassword" aria-label="Toggle password visibility">
                         <i class="lni lni-eye"></i>
                     </button>
                 </div>
@@ -86,25 +87,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <!-- ROLE -->
             <div class="form-group">
-                <label class="form-label">Role</label>
+                <label class="form-label" for="role-select">Collegiate Role</label>
                 <div class="select-style-1">
-                    <select name="role" class="form-control" required>
-                        <option value="admin" <?= $role === 'admin' ? 'selected' : '' ?>>Administrator</option>
-                        <option value="member" <?= $role === 'member' ? 'selected' : '' ?>>Member</option>
+                    <select name="role" id="role-select" class="form-control" required>
+                        <option value="member" <?= $role === 'member' ? 'selected' : '' ?>>Varsity Member / Athlete</option>
+                        <option value="admin" <?= $role === 'admin' ? 'selected' : '' ?>>Athletic Director (Admin)</option>
                     </select>
                 </div>
             </div>
 
             <!-- LOGIN BUTTON -->
-            <button type="submit" class="btn btn-primary btn-login">
-                <i class="lni lni-enter me-2"></i> Sign In
+            <button type="submit" class="btn btn-login">
+                <i class="lni lni-enter"></i> Sign In to Portal
             </button>
+
+            <!-- DEMO CREDENTIALS -->
+            <div class="demo-accounts">
+                <div class="demo-accounts__header">
+                    <span class="demo-accounts__kicker">Quick Demo Accounts</span>
+                    <span style="font-size:0.75rem; color:var(--muted);">Click to fill</span>
+                </div>
+                <div class="demo-accounts__grid">
+                    <div class="demo-account-pill">
+                        <div class="demo-account-pill__info">
+                            <span class="demo-account-pill__role role-admin"><i class="lni lni-shield"></i> Athletic Director</span>
+                            <span class="demo-account-pill__name">Admin Officer (<code>admin</code>)</span>
+                        </div>
+                        <button type="button" class="demo-account-pill__btn" onclick="fillClubDemo('admin', 'admin123', 'admin')">Use</button>
+                    </div>
+                    <div class="demo-account-pill">
+                        <div class="demo-account-pill__info">
+                            <span class="demo-account-pill__role role-member"><i class="lni lni-user"></i> Varsity Athlete</span>
+                            <span class="demo-account-pill__name">Karim Athlete (<code>member1</code>)</span>
+                        </div>
+                        <button type="button" class="demo-account-pill__btn" onclick="fillClubDemo('member1', 'member123', 'member')">Use</button>
+                    </div>
+                </div>
+            </div>
         </form>
 
         <div class="login-footer">
-            <p>Not a member yet?</p>
+            <p>Not registered with the athletic club yet?</p>
             <a href="join_request.php">
-                <i class="lni lni-user me-1"></i> Request to join the club
+                <i class="lni lni-user"></i> Submit Membership Application
             </a>
         </div>
     </div>
@@ -113,7 +138,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script src="../assets/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    // Enhanced Password Toggle
     const passwordField = document.getElementById("password-field");
     const togglePassword = document.getElementById("togglePassword");
     const toggleIcon = togglePassword.querySelector('i');
@@ -122,7 +146,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
         passwordField.setAttribute("type", type);
         
-        // Toggle eye icons
         if (type === "password") {
             toggleIcon.classList.remove("lni-eye-off");
             toggleIcon.classList.add("lni-eye");
@@ -130,18 +153,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             toggleIcon.classList.remove("lni-eye");
             toggleIcon.classList.add("lni-eye-off");
         }
-        
-        // Add focus to password field for better UX
         passwordField.focus();
     });
 
-    // Add animation to form elements
-    document.addEventListener('DOMContentLoaded', function() {
-        const formElements = document.querySelectorAll('.form-control, .btn-login');
-        formElements.forEach((element, index) => {
-            element.style.animationDelay = `${index * 0.1}s`;
-        });
-    });
+    function fillClubDemo(username, password, role) {
+        const uField = document.getElementById("username-field");
+        const pField = document.getElementById("password-field");
+        const rSelect = document.getElementById("role-select");
+        if (uField && pField) {
+            uField.value = username;
+            pField.value = password;
+            if (rSelect) rSelect.value = role;
+            uField.dispatchEvent(new Event('input', { bubbles: true }));
+            pField.dispatchEvent(new Event('input', { bubbles: true }));
+            pField.focus();
+        }
+    }
 </script>
 
 </body>

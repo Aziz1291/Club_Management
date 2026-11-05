@@ -1,59 +1,83 @@
 <?php 
+require_once __DIR__.'/../auth.php'; 
+require_admin(); 
+include("header.php");
 require_once('../classes/Event.php');
-$e=new Event();
-$event=$e->getEvent($_POST['ide']);
-;?>
-<div class="event-form-container">
-    <div class="form-card">
-        <h2 class="form-title">Add New Event</h2>
-        
-        <form class="event-form" id="addEventForm" method="POST" action="../actions/editEvent.php">
-            <div class="form-group">
-                <label for="eventTitle" class="form-label">Event Title</label>
-                <input type="text" value="<?php echo $event[1] ?>" id="eventTitle" name="title" class="form-control" placeholder="Enter event title" required>
-            </div>
+require_once('../classes/Admin.php');
 
-            <div class="form-group">
-                <label for="eventDescription" class="form-label">Description</label>
-                <textarea id="eventDescription"  name="description" class="form-control" rows="4" placeholder="Enter event description" required><?php echo $event[2] ?></textarea>
-            </div>
-            <input type="hidden" name="ide" value="<?php echo $event[0] ?>" >
-            <div class="form-group">
-                <label for="eventDate" class="form-label">Event Date</label>
-                <input type="date" value="<?php echo $event[3] ?>" id="eventDate" name="date" class="form-control" required>
-            </div>
+$eventId = $_POST['ide'] ?? $_GET['ide'] ?? $_GET['id'] ?? 0;
+$e = new Event();
+$event = $e->getEvent($eventId);
 
-            <div class="form-group">
-                <label for="eventLocation" class="form-label">Location</label>
-                <input type="text" value="<?php echo $event[4] ?>" id="eventLocation" name="location" class="form-control" placeholder="Enter event location" required>
-            </div>
+if (!$event) {
+    echo "<div class='container py-5'><div class='club-alert club-alert-danger'>Event record not found. <a href='manage_events.php'>Return to event list</a>.</div></div>";
+    include("footer.php");
+    exit;
+}
 
-            <div class="form-group">
-                <label for="eventAdmin" class="form-label">Select Admin</label>
-                <select id="eventAdmin"  name="admin_id" class="form-control" required>
+$ad = new Admin();
+$admins = $ad->listAdmin();
+?>
 
-                    <option value="">Choose an admin...</option>
-                    
-                    <?php
-                    require_once('../classes/Admin.php');
-                    $ad=new Admin();
-                    $admins=$ad->listAdmin();
-                    foreach ($admins as $admin) {
-                        echo "<option value='$admin[0]'>$admin[1]</option>";
-                    }
-                    ?>
-                </select>
-            </div>
+<link rel="stylesheet" href="../assets/css/addEvent.css">
 
-            <div class="form-actions">
-                <a href="manage_events.php"><button type="button" class="btn-cancel">Cancel</button></a>
-                <button type="submit" class="btn-save">Save Event</button>
+<section class="section">
+    <div class="container-fluid">
+        <div class="event-form-container">
+            <div class="form-card">
+                <span class="kicker">Tournament Director</span>
+                <h2 class="form-title">Edit Scheduled Event</h2>
+                
+                <form class="event-form" id="editEventForm" method="POST" action="../actions/editEvent.php">
+                    <input type="hidden" name="ide" value="<?= htmlspecialchars((string)$event[0]) ?>">
+
+                    <div class="form-group">
+                        <label for="eventTitle" class="form-label">Event / Tournament Title</label>
+                        <input type="text" value="<?= htmlspecialchars($event[1] ?? '') ?>" id="eventTitle" name="title" class="form-control" required autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventDescription" class="form-label">Event Brief &amp; Regulations</label>
+                        <textarea id="eventDescription" name="description" class="form-control" rows="4" required><?= htmlspecialchars($event[2] ?? '') ?></textarea>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group mb-0">
+                                <label for="eventDate" class="form-label">Event Date</label>
+                                <input type="date" value="<?= htmlspecialchars($event[3] ?? '') ?>" id="eventDate" name="date" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-0">
+                                <label for="eventLocation" class="form-label">Facility / Venue</label>
+                                <input type="text" value="<?= htmlspecialchars($event[4] ?? '') ?>" id="eventLocation" name="location" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventAdmin" class="form-label">Presiding Director / Coach</label>
+                        <select id="eventAdmin" name="admin_id" class="form-control" required>
+                            <option value="">Choose an administrator...</option>
+                            <?php foreach ($admins as $admin): ?>
+                                <option value="<?= htmlspecialchars((string)$admin[0]) ?>" <?= $event[5] == $admin[0] ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($admin[1]) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="manage_events.php" class="btn-cancel">Cancel</a>
+                        <button type="submit" class="btn-save">
+                            <i class="lni lni-checkmark me-1"></i> Save Changes
+                        </button>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
-</div>
+</section>
 
-<style>
-    <?php include('../assets/css/addEvent.css');?>
-</style>
-
+<?php include("footer.php"); ?>

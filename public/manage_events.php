@@ -1,74 +1,91 @@
-<?php include("header.php"); ?>
-<style>
-    <?php include('../assets/css/manage_events.css');?>
-</style>
+<?php 
+require_once __DIR__.'/../auth.php'; 
+require_admin(); 
+include("header.php");
+require_once('../classes/User.php');
+require_once('../classes/Event.php');
 
-<div class="events-container">
-    <div class="events-header">
-        <h2>Events Management</h2>
-        <a href="addEvent.php">
-        <button class="btn-add-event" >
-            <i class="fas fa-plus"></i> Add New Event
-        </button>
-        </a>
+$ev = new Event();
+$events = $ev->listEvent(); 
+$ad = new User();
+?>
+
+<link rel="stylesheet" href="../assets/css/manage_events.css">
+
+<section class="section">
+    <div class="container-fluid">
+        <div class="events-container">
+            <div class="events-header">
+                <div>
+                    <span class="kicker">Athletic Governance</span>
+                    <h2>Events &amp; Tournament Director</h2>
+                    <p>Manage and orchestrate all collegiate events, dates, locations, and assigned directors.</p>
+                </div>
+                <div>
+                    <a href="addEvent.php" class="btn-add-event">
+                        <i class="lni lni-plus"></i> Schedule New Event
+                    </a>
+                </div>
+            </div>
+
+            <div class="events-table-container">
+                <table class="events-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Event Title</th>
+                            <th scope="col">Schedule Date</th>
+                            <th scope="col">Location / Venue</th>
+                            <th scope="col">Event Director</th>
+                            <th scope="col">Description</th>
+                            <th scope="col" style="text-align: right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($events)): ?>
+                            <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">No events currently scheduled.</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($events as $event): ?>
+                                <?php
+                                $admin = $ad->getUser($event[5]);
+                                $adminName = htmlspecialchars($admin[1] ?? 'Administrator');
+                                $formattedDate = date('M j, Y', strtotime($event[3]));
+                                $title = htmlspecialchars($event[1] ?? '');
+                                $desc = htmlspecialchars($event[2] ?? '');
+                                $loc = htmlspecialchars($event[4] ?? 'Campus Facility');
+                                $id = htmlspecialchars((string)$event[0]);
+                                ?>
+                                <tr>
+                                    <td><strong><?= $title ?></strong></td>
+                                    <td><span class="table-date-badge"><i class="lni lni-calendar me-1"></i><?= $formattedDate ?></span></td>
+                                    <td><i class="lni lni-map-marker text-muted me-1"></i><?= $loc ?></td>
+                                    <td><?= $adminName ?></td>
+                                    <td class="text-muted" style="max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?= $desc ?></td>
+                                    <td>
+                                        <div class="table-actions justify-content-end">
+                                            <form action="editEvent.php" method="POST" class="d-inline">
+                                                <input type="hidden" value="<?= $id ?>" name="ide">
+                                                <button type="submit" class="btn-edit" aria-label="Edit <?= $title ?>">
+                                                    <i class="lni lni-pencil"></i> Edit
+                                                </button>
+                                            </form>
+                                            <form action="../actions/delEvent.php" method="POST" class="d-inline" onsubmit="return confirm('Delete this scheduled event?');">
+                                                <input type="hidden" value="<?= $id ?>" name="ide">
+                                                <button type="submit" class="btn-delete" aria-label="Delete <?= $title ?>">
+                                                    <i class="lni lni-trash-can"></i> Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
-    <div class="events-table-container">
-        <table class="events-table">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Date</th>
-                    <th>Location</th>
-                    <th>Admin</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                require_once('../classes/User.php');
-                require_once('../classes/Event.php');
-                $ev=new Event();
-                $events=$ev->listEvent(); 
-                $ad=new User();
-                foreach ($events as $event) {
-                    $admin=$ad->getUser($event[5]);
-                    echo "
-                    <tr>
-                        <td>{$event[1]}</td>
-                        <td>{$event[2]}</td>
-                        <td>{$event[3]}</td>
-                        <td>{$event[4]}</td>
-                        <td>{$admin[1]}</td>
-                        <td>
-                            <form action='editEvent.php' method='POST'>
-                            <input type='hidden' value='$event[0]' name='ide'>
-                            <button class='btn-edit' >
-                                <i class='fas fa-edit'></i> Edit
-                            </button>
-                            </form>
-                            <form action='../actions/delEvent.php' method='POST'>
-                            <input type='hidden' value='$event[0]' name='ide'>
-                            <button class='btn-delete' >
-                                <i class='fas fa-trash'></i> Delete
-                            </button>
-                            </form>
-                        </td>
-                    </tr>
-                    ";
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-
-<style>
-    <?php include('../assets/manage_events.css');?>
-</style>
-
-
+</section>
 
 <?php include("footer.php"); ?>

@@ -1,314 +1,134 @@
-/* Members Table Styles */
+/* ==========================================================================
+   ClubManager — Member Roster Styles
+   Gold Standard Benchmark: CV-and-Portfolio (Athletic Collegiate Craft)
+   ========================================================================== */
+
+@import url('club-tokens.css');
+
 .members-container {
-    padding: 20px;
+  padding: 10px 0 40px;
 }
 
 .members-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.members-table-container {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
-}
-
-.members-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-}
-
-.members-table th {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: white;
-    padding: 15px 12px;
-    text-align: left;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 12px;
-}
-
-.members-table td {
-    padding: 15px 12px;
-    border-bottom: 1px solid #f1f5f9;
-    vertical-align: middle;
-}
-
-.members-table tbody tr:hover {
-    background-color: #f8fafc;
-}
-
-.members-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-/* Profile Picture Styles */
-.profile-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #e2e8f0;
-}
-
-/* Action Buttons */
-.action-buttons {
-    display: flex;
-    gap: 8px;
-}
-
-.btn-edit {
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.btn-edit:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
-    color: white;
-    text-decoration: none;
-}
-
-.btn-delete {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.btn-delete:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
-    color: white;
-    text-decoration: none;
-}
-
-/* Status Badges */
-.role-badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.role-admin {
-    background: #fef3c7;
-    color: #92400e;
-}
-
-.role-member {
-    background: #dcfce7;
-    color: #166534;
-}
-
-/* Empty State */
-.empty-state {
-    text-align: center;
-    padding: 40px;
-    color: #64748b;
-}
-
-.empty-state i {
-    font-size: 48px;
-    margin-bottom: 16px;
-    color: #cbd5e1;
-}
-/* Add Member Button Styles */
-.add-member-btn-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .btn-add-member {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 20px;
+  background-color: var(--accent);
+  color: #ffffff;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
 }
 
 .btn-add-member:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(59, 130, 246, 0.3);
-    color: white;
-    text-decoration: none;
+  background-color: var(--accent-dark);
+  border-color: var(--accent-dark);
+  color: #ffffff;
 }
 
-/* Members Table Styles */
-.members-container {
-    padding: 20px;
-}
-
-.members-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
+.btn-add-member:active {
+  transform: scale(0.97);
 }
 
 .members-table-container {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+  box-shadow: var(--shadow-card);
 }
 
 .members-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
 }
 
 .members-table th {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: white;
-    padding: 15px 12px;
-    text-align: left;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 12px;
+  background: var(--tint);
+  color: var(--muted);
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.78rem;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
 }
 
 .members-table td {
-    padding: 15px 12px;
-    border-bottom: 1px solid #f1f5f9;
-    vertical-align: middle;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+  color: var(--ink);
 }
 
 .members-table tbody tr:hover {
-    background-color: #f8fafc;
+  background-color: var(--tint-subtle);
 }
 
 .members-table tbody tr:last-child td {
-    border-bottom: none;
+  border-bottom: none;
 }
 
-/* Profile Picture Styles */
-.profile-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #e2e8f0;
+.member-id-badge {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--subtle);
+  background-color: var(--tint);
+  border: 1px solid var(--line);
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  display: inline-block;
 }
 
-/* Action Buttons */
+.member-athlete-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.member-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.member-info h4 {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+}
+
+.member-info span {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
 .action-buttons {
-    display: flex;
-    gap: 8px;
-}
-
-.btn-edit {
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.btn-edit:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
-    color: white;
-    text-decoration: none;
-}
-
-.btn-delete {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.btn-delete:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
-    color: white;
-    text-decoration: none;
-}
-
-/* Status Badges */
-.role-badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.role-admin {
-    background: #fef3c7;
-    color: #92400e;
-}
-
-.role-member {
-    background: #dcfce7;
-    color: #166534;
-}
-
-/* Empty State */
-.empty-state {
-    text-align: center;
-    padding: 40px;
-    color: #64748b;
-}
-
-.empty-state i {
-    font-size: 48px;
-    margin-bottom: 16px;
-    color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }

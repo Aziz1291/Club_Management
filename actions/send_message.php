@@ -1,10 +1,18 @@
 <?php
+require_once('../auth.php');
+require_login();
+require_post();
 require_once('../classes/Message.php');
-session_start();
+
+$content = trim($_POST['content'] ?? '');
+$receiverId = (int)($_POST['receiver_id'] ?? 0);
+
+if ($content !== '' && $receiverId > 0) {
     $m = new Message();
-    $sender_id = $_SESSION['id'];
-    $receiver_id = $_POST['receiver_id'];
-    $content = $_POST['content'];
-    $m->sendMessage($sender_id, $receiver_id, $content);
-    header('Location: ../public/messages.php');
+    $m->sendMessage((int) $_SESSION['id'], $receiverId, $content);
+    header('Location: ../public/messages.php?sent=1');
+    exit;
+}
+header('Location: ../public/messages.php');
+exit;
 ?>

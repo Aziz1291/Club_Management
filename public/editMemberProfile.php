@@ -1,81 +1,102 @@
-<?php include("header.php"); ?>
-<style><?php include('../assets/css/profile.css')?> </style>
-<?php
+<?php 
+require_once __DIR__.'/../auth.php'; 
+require_admin(); 
+include("header.php");
 require_once('../classes/Admin.php');
+
+$targetId = $_POST['curid'] ?? $_GET['curid'] ?? $_GET['id'] ?? 0;
 $us  = new Admin();
-$row = $us->getUser($_POST['curid']);
+$row = $us->getUser($targetId);
+
+if (!$row) {
+    echo "<div class='container py-5'><div class='club-alert club-alert-danger'>Athlete record not found. <a href='members.php'>Return to roster</a>.</div></div>";
+    include("footer.php");
+    exit;
+}
+
 $currentPic = !empty($row[5]) ? htmlspecialchars($row[5]) : '../assets/images/profilee.jpg';
+$role = htmlspecialchars($row[4] ?? 'member');
+$name = htmlspecialchars($row[1] ?? 'Athlete');
+$email = htmlspecialchars($row[2] ?? '');
+$id = htmlspecialchars((string)$row[0]);
 ?>
 
-<div class="profile-card">
-    <div class="profile-header">
-        <div class="profile-image-container">
-            <img src="<?= $currentPic ?>" alt="Profile Image" class="profile-image" id="profile-image">
-            <label class="profile-image-overlay" for="profile-image-input">
-                <i class="lni lni-camera"></i>
-                <span>Change Photo</span>
-            </label>
+<link rel="stylesheet" href="../assets/css/profile.css">
+
+<section class="section">
+    <div class="container-fluid">
+        <div class="profile-card">
+            <div class="profile-header">
+                <span class="kicker">Privileged Administrative Roster Mutation</span>
+                <div class="profile-image-container mt-3">
+                    <img src="<?= $currentPic ?>" alt="Profile photo" class="profile-image" id="profile-image" onerror="this.src='../assets/images/profilee.jpg'">
+                    <label class="profile-image-overlay" for="profile-image-input" title="Override athlete photo">
+                        <i class="lni lni-camera"></i>
+                        <span>Replace Photo</span>
+                    </label>
+                </div>
+                <h1 class="profile-name"><?= $name ?></h1>
+                <p class="profile-role">
+                    <span class="pill <?= $role === 'admin' ? 'pill-admin' : 'pill-member' ?>">
+                        <?= $role === 'admin' ? 'Athletic Director' : 'Varsity Athlete' ?>
+                    </span>
+                </p>
+            </div>
+
+            <form class="profile-form" id="profile-form" method="post" action="../actions/editMemberProfile.php" enctype="multipart/form-data">
+                <!-- Hidden inputs -->
+                <input type="hidden" name="id" value="<?= $id ?>">
+                <input type="hidden" name="old_img" value="<?= htmlspecialchars($row[5] ?? '') ?>">
+
+                <!-- Profile picture file input -->
+                <input type="file" id="profile-image-input" name="profile_image" accept="image/jpeg,image/png,image/gif,image/webp">
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <div class="form-group mb-0">
+                            <label for="user-id" class="form-label">Member ID</label>
+                            <input type="text" id="user-id" class="form-control tabular-num" value="#ATH-<?= $id ?>" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group mb-0">
+                            <label for="user-name" class="form-label">Full Name</label>
+                            <input type="text" id="user-name" name="name" class="form-control" value="<?= $name ?>" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="user-email" class="form-label">Collegiate Email Address</label>
+                    <input type="email" id="user-email" name="email" class="form-control" value="<?= $email ?>" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="user-password" class="form-label">Password Override</label>
+                    <input type="password" id="user-password" name="pwd" class="form-control" placeholder="Leave blank to maintain current credentials">
+                    <small class="text-muted">Enter a new password only if overriding this athlete's credentials.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="user-role" class="form-label">Division &amp; Permissions Role</label>
+                    <div class="select-style-1">
+                        <select name="role" id="user-role" class="form-control" required>
+                            <option value="member" <?= $role === 'member' ? 'selected' : '' ?>>Varsity Member / Athlete</option>
+                            <option value="admin"  <?= $role === 'admin'  ? 'selected' : '' ?>>Athletic Director (Administrator)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="members.php" class="btn-cancel">Return to Roster</a>
+                    <button type="submit" class="btn-save">
+                        <i class="lni lni-checkmark me-1"></i> Save Changes
+                    </button>
+                </div>
+            </form>
         </div>
-        <h1 class="profile-name"><?= htmlspecialchars($row[1]) ?></h1>
-        <p class="profile-role"><?= htmlspecialchars($row[4]) ?></p>
     </div>
-
-    <form class="profile-form" id="profile-form" method="post"
-          action="../actions/editMemberProfile.php"
-          enctype="multipart/form-data">
-
-        <!-- Hidden fields -->
-        <input type="hidden" name="id"      value="<?= $row[0] ?>">
-        <input type="hidden" name="old_img" value="<?= $row[5] ?>">
-
-        <!-- Profile picture upload -->
-        <div class="form-group">
-            <label for="profile-image-input" class="form-label">Profile Picture</label>
-            <input type="file" id="profile-image-input" name="profile_image"
-                   accept="image/jpeg,image/png,image/gif,image/webp"
-                   class="form-control">
-            <small class="text-muted">Leave empty to keep current photo. Max 5 MB.</small>
-        </div>
-
-        <div class="form-group">
-            <label for="user-id" class="form-label">User ID</label>
-            <input type="text" id="user-id" class="form-control"
-                   value="<?= $row[0] ?>" disabled>
-        </div>
-
-        <div class="form-group">
-            <label for="user-name" class="form-label">Full Name</label>
-            <input type="text" id="user-name" name="name" class="form-control"
-                   value="<?= htmlspecialchars($row[1]) ?>">
-        </div>
-
-        <div class="form-group">
-            <label for="user-email" class="form-label">Email Address</label>
-            <input type="email" id="user-email" name="email" class="form-control"
-                   value="<?= htmlspecialchars($row[2]) ?>">
-        </div>
-
-        <div class="form-group">
-            <label for="user-password" class="form-label">Password</label>
-            <input type="password" id="user-password" name="pwd" class="form-control"
-                   placeholder="Leave blank to keep unchanged"
-                   value="<?= htmlspecialchars($row[3]) ?>">
-        </div>
-
-        <div class="form-group">
-            <label for="user-role" class="form-label">Role</label>
-            <select name="role" id="user-role" class="form-control">
-                <option value="admin"  <?= $row[4] === 'admin'  ? 'selected' : '' ?>>Admin</option>
-                <option value="member" <?= $row[4] === 'member' ? 'selected' : '' ?>>Member</option>
-            </select>
-        </div>
-
-        <div class="form-actions">
-            <a href="members.php"><button type="button" class="btn-cancel">Cancel</button></a>
-            <input type="submit" class="btn-save" value="Save Changes">
-        </div>
-    </form>
-</div>
+</section>
 
 <script>
 document.getElementById('profile-image-input').addEventListener('change', function(e) {

@@ -17,9 +17,9 @@ class Message{
     $res = $this->pdo->prepare($req);
     $res->execute([$sender_id, $receiver_id, $content]);
     }
-    function markAsRead($message_id) {
-    $req = "UPDATE messages SET status = 'read' WHERE id = ?";
+    function markAsRead($message_id, $receiver_id) {
+    $req = "UPDATE messages SET status = 'read' WHERE id = ? AND receiver_id = ?";
     $res = $this->pdo->prepare($req);
-    $res->execute([$message_id]);
+    $res->execute([$message_id, $receiver_id]);
     } 
 }
