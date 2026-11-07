@@ -43,7 +43,7 @@ $ad = new User();
                     <tbody>
                         <?php if (empty($events)): ?>
                             <tr>
-                                <td colspan="6" class="text-center py-4 text-muted">No events currently scheduled.</td>
+                                <td colspan="6" class="text-center py-4 text-muted empty-row">No events currently scheduled.</td>
                             </tr>
                         <?php else: ?>
                             <?php foreach ($events as $event): ?>
@@ -57,12 +57,12 @@ $ad = new User();
                                 $id = htmlspecialchars((string)$event[0]);
                                 ?>
                                 <tr>
-                                    <td><strong><?= $title ?></strong></td>
-                                    <td><span class="table-date-badge"><i class="lni lni-calendar me-1"></i><?= $formattedDate ?></span></td>
-                                    <td><i class="lni lni-map-marker text-muted me-1"></i><?= $loc ?></td>
-                                    <td><?= $adminName ?></td>
-                                    <td class="text-muted" style="max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?= $desc ?></td>
-                                    <td>
+                                    <td data-label="Event"><strong><?= $title ?></strong></td>
+                                    <td data-label="Date"><span class="table-date-badge"><i class="lni lni-calendar me-1"></i><?= $formattedDate ?></span></td>
+                                    <td data-label="Location"><i class="lni lni-map-marker text-muted me-1"></i><?= $loc ?></td>
+                                    <td data-label="Director"><?= $adminName ?></td>
+                                    <td class="text-muted event-desc" data-label="Description"><?= $desc ?></td>
+                                    <td class="cell-actions">
                                         <div class="table-actions justify-content-end">
                                             <form action="editEvent.php" method="POST" class="d-inline">
 <?= csrf_field() ?>

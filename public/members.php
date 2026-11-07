@@ -49,7 +49,7 @@ if ($q !== '') {
                         <tbody>
                             <?php if (empty($res)): ?>
                                 <tr>
-                                    <td colspan="6" class="text-center py-4 text-muted">No members enrolled in the club roster.</td>
+                                    <td colspan="6" class="text-center py-4 text-muted empty-row">No members enrolled in the club roster.</td>
                                 </tr>
                             <?php else: ?>
                                 <?php foreach ($res as $row): ?>
@@ -63,10 +63,10 @@ if ($q !== '') {
                                     $roleLabel = $role === 'admin' ? 'Athletic Director' : 'Varsity Athlete';
                                     ?>
                                     <tr>
-                                        <td>
+                                        <td data-label="ID">
                                             <span class="member-id-badge">#ATH-<?= $id ?></span>
                                         </td>
-                                        <td>
+                                        <td data-label="Member" class="cell-main">
                                             <div class="member-athlete-cell">
                                                 <img src="<?= $avatar ?>" class="member-avatar" alt="<?= $name ?>" onerror="this.src='../assets/images/profilee.jpg'">
                                                 <div class="member-info">
@@ -75,16 +75,16 @@ if ($q !== '') {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td data-label="Email">
                                             <a href="mailto:<?= $email ?>" class="text-muted"><i class="lni lni-envelope me-1"></i><?= $email ?></a>
                                         </td>
-                                        <td>
+                                        <td data-label="Role">
                                             <span class="pill <?= $rolePillClass ?>"><?= $roleLabel ?></span>
                                         </td>
-                                        <td>
+                                        <td data-label="Status">
                                             <span class="pill tone-sea"><i class="lni lni-checkmark me-1"></i>Active</span>
                                         </td>
-                                        <td>
+                                        <td class="cell-actions">
                                             <div class="action-buttons justify-content-end">
                                                 <form action="editMemberProfile.php" method="POST" class="d-inline">
 <?= csrf_field() ?>

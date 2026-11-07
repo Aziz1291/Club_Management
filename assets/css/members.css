@@ -132,3 +132,37 @@
   align-items: center;
   gap: 8px;
 }
+
+/* Phone: each row becomes a card, actions stay visible */
+@media (max-width: 640px) {
+  .members-table-container { background: transparent; border: 0; box-shadow: none; overflow: visible; }
+  .members-table, .members-table tbody, .members-table tr, .members-table td { display: block; width: 100%; }
+  .members-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .members-table tbody tr {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    margin-bottom: 14px;
+    padding: 6px 0;
+  }
+  .members-table td {
+    display: flex; justify-content: space-between; align-items: center; gap: 14px;
+    padding: 10px 16px; border-bottom: 0; text-align: right; overflow-wrap: anywhere;
+  }
+  .members-table td[data-label]::before {
+    content: attr(data-label); flex: 0 0 auto;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); text-align: left;
+  }
+  .members-table td.cell-actions { padding-top: 12px; margin-top: 4px; border-top: 1px solid var(--line); }
+  .members-table td.cell-actions > div { width: 100%; display: flex; gap: 10px; }
+  .members-table td.cell-actions form { flex: 1; display: block; }
+  .members-table td.cell-actions .btn-edit, .members-table td.cell-actions .btn-delete { width: 100%; }
+  .members-table td.empty-row { display: block; text-align: center; }
+  .members-table tbody tr:hover { background-color: var(--surface); }
+}
+
+@media (max-width: 640px) {
+  .members-table td.cell-main { justify-content: flex-start; text-align: left; }
+  .btn-add-member { min-height: 44px; }
+}
