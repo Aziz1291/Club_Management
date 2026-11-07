@@ -25,6 +25,10 @@ if (empty($_SESSION['id'])) {
         button { font: inherit; padding: 10px 20px; border-radius: 8px; border: 0; background: #1f2329; color: #fff; cursor: pointer; }
         a { color: #555; display: inline-block; margin-top: 14px; }
     </style>
+    <link rel="icon" href="../assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon-48.png">
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 </head>
 <body>
 <main>

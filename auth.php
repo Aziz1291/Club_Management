@@ -45,7 +45,7 @@ function forbidden_page()
     $message = 'This page is for administrators only. Your account is a regular member account.';
     if (basename(dirname($_SERVER['SCRIPT_NAME'])) === 'actions') {
         echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
-            . '<title>Access denied</title></head>'
+            . '<title>Access denied</title><link rel="icon" href="../assets/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="../assets/favicon.svg"><link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon-48.png"><link rel="apple-touch-icon" href="../assets/apple-touch-icon.png"></head>'
             . '<body style="font-family:system-ui,sans-serif;max-width:32rem;margin:15vh auto;padding:0 1rem;color:#1f2937">'
             . '<h1 style="font-size:1.5rem">Access denied</h1><p>' . $message . '</p>'
             . '<p><a href="../public/index.php">Back to the dashboard</a></p></body></html>';

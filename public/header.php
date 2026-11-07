@@ -24,7 +24,6 @@ require_once __DIR__ . '/../auth.php';
     <meta name="twitter:description" content="An academic club management demo for members, events and messages.">
     <meta name="twitter:image" content="https://www.azizkouki.com/projects/club/assets/social-preview.png">
     <title>ClubManager</title>
-    <link rel="icon" type="image/png" href="../assets/favicon.png">
 
     <!-- Fonts: Outfit (Brand & Headings) + JetBrains Mono (Data & Tabs) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,6 +34,10 @@ require_once __DIR__ . '/../auth.php';
     <link rel="stylesheet" href="../assets/css/lineicons.css">
     <link rel="stylesheet" href="../assets/css/club-tokens.css">
     <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="icon" href="../assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon-48.png">
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 </head>
 
 <body>

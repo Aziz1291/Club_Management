@@ -45,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="twitter:description" content="An academic club management demo for members, events and messages.">
     <meta name="twitter:image" content="https://www.azizkouki.com/projects/club/assets/social-preview.png">
     <title>Sign In – ClubManager</title>
-    <link rel="icon" type="image/png" href="../assets/favicon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,6 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../assets/css/lineicons.css">
     <link rel="stylesheet" href="../assets/css/club-tokens.css">
     <link rel="stylesheet" href="../assets/css/login.css">
+    <link rel="icon" href="../assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon-48.png">
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
 </head>
 
 <body>
