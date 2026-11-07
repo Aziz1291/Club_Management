@@ -3,18 +3,29 @@ require_once('../auth.php');
 require_login();
 require_post();
 require_once('../classes/Registration.php');
+require_once('../classes/Event.php');
 
 $eventId = (int) ($_POST['idEvent'] ?? 0);
 $userId  = (int) ($_SESSION['id'] ?? 0);
+
+// Past events are closed for registration.
+$event = $eventId > 0 ? (new Event())->getEvent($eventId) : null;
+if (!$event || substr((string) $event['date'], 0, 10) < date('Y-m-d')) {
+    flash_notice('Registration is closed: this event has already taken place.', 'error');
+    header('Location: ../public/events.php');
+    exit;
+}
 
 $M = new Registration();
 if ($eventId > 0 && $userId > 0) {
     $registered = $M->registerToEvent($userId, $eventId);
     if ($registered) {
-        header("Location: ../public/events.php?registered=1&event_id=" . $eventId);
+        flash_code('registered');
+        header("Location: ../public/events.php");
         exit;
     } else {
-        header("Location: ../public/events.php?already_registered=1&event_id=" . $eventId);
+        flash_code('already_registered');
+        header("Location: ../public/events.php");
         exit;
     }
 }

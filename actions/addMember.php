@@ -7,5 +7,6 @@ $role = in_array($_POST['role'] ?? '', ['admin', 'member'], true) ? $_POST['role
 $u = new User();
 [$name, $email, $password] = form_account('../public/addMember.php', $u, 0, 'username', 'password', true);
 $u->addUser($name, $email, $password, $role); // addUser hashes the password
+flash_notice('Member added.');
 header('location:../public/members.php');
 ?>

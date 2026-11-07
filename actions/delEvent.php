@@ -5,5 +5,6 @@ require_post();
 require_once('../classes/Event.php');
 $e = new Event();
 $e->delEvent((int) $_POST['ide']);
+flash_notice('Event deleted.');
 header("location:../public/manage_events.php");
 ?>

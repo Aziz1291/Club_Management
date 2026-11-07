@@ -17,15 +17,16 @@ $id = htmlspecialchars((string)$row[0]);
 <section class="section">
     <div class="container-fluid">
         <div class="profile-card">
-            <?php if (!empty($_GET['success'])): ?>
+            <?php $notice = take_flash_code(); ?>
+            <?php if ($notice === 'profile_saved'): ?>
                 <div class="flash-success">
                     <i class="lni lni-checkmark-circle"></i> Profile dossier updated successfully!
                 </div>
             <?php endif; ?>
-            <?php if (!empty($_GET['error'])): ?>
+            <?php if (strpos($notice, 'img_') === 0): ?>
                 <div class="flash-error">
                     <i class="lni lni-warning"></i>
-                    <?= $_GET['error'] === 'invalid_type' ? 'Invalid file format. Please upload JPG, PNG, GIF, or WebP.' : 'File exceeds maximum size threshold (5 MB).' ?>
+                    <?= $notice === 'img_invalid_type' ? 'Invalid file format. Please upload JPG, PNG, GIF, or WebP.' : 'File exceeds maximum size threshold (5 MB).' ?>
                 </div>
             <?php endif; ?>
 

@@ -14,6 +14,7 @@ if ($receiverId <= 0 || !(new User())->getUser($receiverId)) {
 
 $m = new Message();
 $m->sendMessage((int) $_SESSION['id'], $receiverId, $content);
-header('Location: ../public/messages.php?sent=1');
+flash_code('sent');
+header('Location: ../public/messages.php?box=sent');
 exit;
 ?>

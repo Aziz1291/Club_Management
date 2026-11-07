@@ -14,5 +14,6 @@ if ($adminId <= 0) {
 }
 $ev = new Event();
 $ev->addEvent($title, $description, $date, $location, $adminId);
+flash_notice('Event created.');
 header("location:../public/manage_events.php");
 ?>

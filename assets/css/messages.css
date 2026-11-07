@@ -305,3 +305,13 @@
   border-color: var(--sea-ink);
   color: var(--sea-ink);
 }
+
+
+/* Long words and links wrap instead of overflowing the card. */
+.message-content { overflow-wrap: anywhere; }
+
+.message-tabs { display: flex; gap: 6px; margin: -4px 0 14px; }
+.message-tabs a { padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line, #ddd); color: inherit; text-decoration: none; font-size: 0.88rem; }
+.message-tabs a.active { background: var(--ink, #1f2329); border-color: var(--ink, #1f2329); color: #fff; }
+.message-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
+.message-actions form { margin: 0; }

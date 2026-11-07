@@ -21,6 +21,7 @@ $imgPath = save_profile_image($_FILES['profile_image'] ?? [], $id, $cur['profile
 
 $us->updateProfile($id, $name, $email, $pwd, $imgPath, $role); // blank password keeps the current one
 
-header('Location: ../public/members.php?success=1');
+flash_notice('Member profile updated.');
+header('Location: ../public/members.php');
 exit;
 ?>

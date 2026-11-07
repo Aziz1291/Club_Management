@@ -13,7 +13,8 @@ $cur = $us->getUser($id);
 
 $imgPath = save_profile_image($_FILES['profile_image'] ?? [], $id, $cur['profile_picture'], $imgError);
 if ($imgError) {
-    header('Location: ../public/profile.php?error=' . $imgError);
+    flash_code('img_' . $imgError);
+    header('Location: ../public/profile.php');
     exit;
 }
 $imgPath = $imgPath ?? $cur['profile_picture'];
@@ -24,6 +25,7 @@ $_SESSION['username']        = $name;
 $_SESSION['email']           = $email;
 $_SESSION['profile_picture'] = $imgPath;
 
-header('Location: ../public/profile.php?success=1');
+flash_code('profile_saved');
+header('Location: ../public/profile.php');
 exit;
 ?>

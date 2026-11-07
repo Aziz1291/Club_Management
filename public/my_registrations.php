@@ -29,7 +29,7 @@ $totalPasses = count($regList);
                 </div>
             </div>
 
-            <?php if (isset($_GET['cancelled'])): ?>
+            <?php if (take_flash_code() === 'cancelled'): ?>
                 <div class="alert-cancellation-success" role="alert">
                     <i class="lni lni-checkmark-circle"></i>
                     <div>

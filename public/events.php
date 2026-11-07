@@ -24,6 +24,14 @@ foreach ($allEvents as $item) {
     }
     $events[] = $item;
 }
+// Upcoming events soonest first, then past events most recent first.
+$today = date('Y-m-d');
+$isPastEvent = fn($e) => substr((string) $e[3], 0, 10) < $today;
+$events = array_merge(
+    array_values(array_filter($events, fn($e) => !$isPastEvent($e))),
+    array_reverse(array_values(array_filter($events, $isPastEvent)))
+);
+$notice = take_flash_code();
 ?>
 
 <link rel="stylesheet" href="../assets/css/events.css">
@@ -35,7 +43,7 @@ foreach ($allEvents as $item) {
             <div class="events-header-bar">
                 <div>
                     <span class="kicker">Schedule &amp; Tournaments</span>
-                    <h1 class="page-title">Upcoming Club Events</h1>
+                    <h1 class="page-title">Club Events</h1>
                     <p class="page-subtitle">Participate in collegiate meets, training workshops, and team competitions.</p>
                 </div>
                 <div>
@@ -46,7 +54,7 @@ foreach ($allEvents as $item) {
             </div>
 
             <!-- Registration Success Alert Banner -->
-            <?php if (isset($_GET['registered'])): ?>
+            <?php if ($notice === 'registered'): ?>
                 <div class="alert-registration-success" role="alert">
                     <div class="d-flex align-items-center gap-3">
                         <i class="lni lni-checkmark-circle icon-success"></i>
@@ -59,7 +67,7 @@ foreach ($allEvents as $item) {
                         <i class="lni lni-ticket"></i> Inspect Tournament Passbook &rarr;
                     </a>
                 </div>
-            <?php elseif (isset($_GET['already_registered'])): ?>
+            <?php elseif ($notice === 'already_registered'): ?>
                 <div class="alert-registration-success" style="border-left-color: var(--accent);" role="alert">
                     <div class="d-flex align-items-center gap-3">
                         <i class="lni lni-information icon-success" style="color: var(--accent);"></i>
@@ -105,13 +113,14 @@ foreach ($allEvents as $item) {
                         $desc = htmlspecialchars($event[2] ?? '');
                         $location = htmlspecialchars($event[4] ?? 'Campus Facility');
                         $isRegistered = in_array($eventId, $myRegisteredEventIds, true);
+                        $isPast = $isPastEvent($event);
                         ?>
-                        <div class="event-card" data-event-id="<?= $eventId ?>" data-registered="<?= $isRegistered ? '1' : '0' ?>">
+                        <div<?= $isPast ? ' style="opacity:.7"' : '' ?> class="event-card" data-event-id="<?= $eventId ?>" data-registered="<?= $isRegistered ? '1' : '0' ?>">
                             <div class="event-header">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
                                     <span class="event-id-tag">#EVT-<?= str_pad((string)$eventId, 2, '0', STR_PAD_LEFT) ?></span>
                                     <span class="event-date">
-                                        <i class="lni lni-calendar"></i> <?= $formattedDate ?>
+                                        <i class="lni lni-calendar"></i> <?= $formattedDate ?><?= $isPast ? ' &middot; Ended' : '' ?>
                                     </span>
                                 </div>
                                 <h3 class="event-title"><?= $title ?></h3>
@@ -146,6 +155,8 @@ foreach ($allEvents as $item) {
                                             <i class="lni lni-ticket"></i> View Pass
                                         </a>
                                     </div>
+                                <?php elseif ($isPast): ?>
+                                    <span class="text-muted"><i class="lni lni-lock"></i> Event ended &middot; registration closed</span>
                                 <?php else: ?>
                                     <form action="../actions/register.php" method="POST">
 <?= csrf_field() ?>

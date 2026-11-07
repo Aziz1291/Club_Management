@@ -57,7 +57,7 @@ require_once __DIR__ . '/../auth.php';
                     <div class="header-search d-none d-md-flex">
                         <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
                             <form action="members.php" method="GET">
-                                <input type="text" name="q" aria-label="Search athletes" placeholder="Search athletes, events..." />
+                                <input type="text" name="q" aria-label="Search members" placeholder="Search members..." />
                                 <button type="submit" aria-label="Search"><i class="lni lni-search-alt"></i></button>
                             </form>
                         <?php else: ?>
@@ -207,3 +207,4 @@ require_once __DIR__ . '/../auth.php';
         </div>
     </div>
 </header>
+<?php flash_notice_box(); ?>

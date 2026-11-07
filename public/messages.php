@@ -7,8 +7,12 @@ $u = new User();
 $m = new Message();
 $users = $u->list_user();
 $current_user_id = (int)($_SESSION['id'] ?? 0);
-$messages = $m->getMessagesForUser($current_user_id);
-$msgList = $messages ? $messages->fetchAll(PDO::FETCH_ASSOC) : [];
+$box = ($_GET['box'] ?? '') === 'sent' ? 'sent' : 'inbox';
+$inboxList = $m->getMessagesForUser($current_user_id)->fetchAll(PDO::FETCH_ASSOC);
+$sentList = $m->getSentByUser($current_user_id)->fetchAll(PDO::FETCH_ASSOC);
+$msgList = $box === 'sent' ? $sentList : $inboxList;
+$replyTo = (int) form_old('receiver_id', $_GET['to'] ?? 0);
+$notice = take_flash_code();
 ?>
 
 <link rel="stylesheet" href="../assets/css/messages.css">
@@ -22,7 +26,7 @@ $msgList = $messages ? $messages->fetchAll(PDO::FETCH_ASSOC) : [];
                 <p class="page-subtitle">Communicate with club directors, coaches, and team athletes.</p>
             </div>
 
-            <?php if (isset($_GET['sent'])): ?>
+            <?php if ($notice === 'sent'): ?>
                 <div class="alert-dispatch-sent" role="alert">
                     <i class="lni lni-checkmark-circle"></i>
                     <div>
@@ -34,7 +38,7 @@ $msgList = $messages ? $messages->fetchAll(PDO::FETCH_ASSOC) : [];
 
             <div class="messages-container">
                 <!-- Compose Dispatch Panel -->
-                <div class="send-message-section">
+                <div class="send-message-section" id="compose">
                     <h3 class="section-title">
                         <i class="lni lni-pencil-alt"></i> Compose Dispatch
                     </h3>
@@ -47,7 +51,7 @@ $msgList = $messages ? $messages->fetchAll(PDO::FETCH_ASSOC) : [];
                                 <option value="">Choose an athlete or director...</option>
                                 <?php foreach ($users as $user): ?>
                                     <?php if ($user[0] != $current_user_id): ?>
-                                        <option value="<?= htmlspecialchars((string)$user[0]) ?>">
+                                        <option value="<?= htmlspecialchars((string)$user[0]) ?>"<?= (int)$user[0] === $replyTo ? ' selected' : '' ?>>
                                             <?= htmlspecialchars($user[1]) ?> (<?= ucfirst(htmlspecialchars($user[4])) ?>)
                                         </option>
                                     <?php endif; ?>
@@ -67,20 +71,25 @@ $msgList = $messages ? $messages->fetchAll(PDO::FETCH_ASSOC) : [];
                 <!-- Messages Stream Panel -->
                 <div class="messages-list-section">
                     <h3 class="section-title">
-                        <i class="lni lni-inbox"></i> Your Dispatches Inbox (<?= count($msgList) ?>)
+                        <i class="lni lni-inbox"></i> Your Dispatches
                     </h3>
+                    <nav class="message-tabs" aria-label="Message folders">
+                        <a href="messages.php" class="<?= $box === 'inbox' ? 'active' : '' ?>" <?= $box === 'inbox' ? 'aria-current="page"' : '' ?>>Inbox (<?= count($inboxList) ?>)</a>
+                        <a href="messages.php?box=sent" class="<?= $box === 'sent' ? 'active' : '' ?>" <?= $box === 'sent' ? 'aria-current="page"' : '' ?>>Sent (<?= count($sentList) ?>)</a>
+                    </nav>
                     <div class="messages-list">
                         <?php if (empty($msgList)): ?>
                             <div class="club-card text-center py-5">
                                 <i class="lni lni-envelope" style="font-size: 2.2rem; color: var(--subtle);"></i>
-                                <h4 class="mt-3">No Dispatches in Inbox</h4>
-                                <p class="text-muted mb-0">Messages sent to you from members and administrators will appear here.</p>
+                                <h4 class="mt-3"><?= $box === 'sent' ? 'No Sent Dispatches' : 'No Dispatches in Inbox' ?></h4>
+                                <p class="text-muted mb-0"><?= $box === 'sent' ? 'Messages you send will appear here.' : 'Messages sent to you from members and administrators will appear here.' ?></p>
                             </div>
                         <?php else: ?>
                             <?php foreach ($msgList as $message): ?>
                                 <?php 
                                 $msgId = (int)$message['id'];
-                                $sender = $u->getUser($message['sender_id']);
+                                // In the inbox the card shows who sent it; in Sent, who it went to.
+                                $sender = $u->getUser($box === 'sent' ? $message['receiver_id'] : $message['sender_id']);
                                 $senderName = htmlspecialchars($sender[1] ?? 'User');
                                 $senderRole = htmlspecialchars($sender[4] ?? 'Member');
                                 $status = htmlspecialchars($message['status'] ?? 'read');
@@ -97,11 +106,11 @@ $msgList = $messages ? $messages->fetchAll(PDO::FETCH_ASSOC) : [];
                                             <img src="<?= $avatar ?>" class="sender-avatar-img" alt="<?= $senderName ?>" onerror="this.src='../assets/images/profilee.jpg'">
                                             <div class="sender-details">
                                                 <h4><?= $senderName ?></h4>
-                                                <p><?= $senderRole ?></p>
+                                                <p><?= $box === 'sent' ? 'To &middot; ' : '' ?><?= $senderRole ?></p>
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-center gap-2">
-                                            <?php if ($status === 'unread'): ?>
+                                            <?php if ($box === 'inbox' && $status === 'unread'): ?>
                                                 <button type="button" class="btn-mark-read" onclick="markMessageAsRead(<?= $msgId ?>, this)" title="Mark as read">
                                                     <i class="lni lni-checkmark"></i> Mark Read
                                                 </button>
@@ -115,6 +124,17 @@ $msgList = $messages ? $messages->fetchAll(PDO::FETCH_ASSOC) : [];
                                     <div class="message-time">
                                         <i class="lni lni-timer"></i>
                                         <span><?= $timeLabel ?></span>
+                                    </div>
+                                    <div class="message-actions">
+                                        <?php if ($box === 'inbox'): ?>
+                                            <a href="messages.php?to=<?= (int)$message['sender_id'] ?>#compose" class="btn-mark-read"><i class="lni lni-reply"></i> Reply</a>
+                                        <?php else: ?>
+                                            <form method="post" action="../actions/delete_message.php" onsubmit="return confirm('Delete this message? It is removed for the recipient too.');">
+                                                <?= csrf_field() ?>
+                                                <input type="hidden" name="id" value="<?= $msgId ?>">
+                                                <button type="submit" class="btn-mark-read"><i class="lni lni-trash-can"></i> Delete</button>
+                                            </form>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             <?php endforeach; ?>

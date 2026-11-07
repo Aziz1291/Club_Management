@@ -75,6 +75,42 @@ function require_post()
     }
 }
 
+/** A one-time message shown at the top of the next page (instead of ?success=1 in the URL). */
+function flash_notice($text, $type = 'success')
+{
+    auth_start();
+    $_SESSION['flash_notice'] = [$type, $text];
+}
+
+/** Prints and forgets the one-time message. Called by header.php on every page. */
+function flash_notice_box()
+{
+    auth_start();
+    if (empty($_SESSION['flash_notice'])) {
+        return;
+    }
+    [$type, $text] = $_SESSION['flash_notice'];
+    unset($_SESSION['flash_notice']);
+    $class = $type === 'error' ? 'alert-danger' : 'alert-success';
+    echo '<div class="container-fluid"><div class="alert ' . $class . ' mt-3 mb-0" role="status">'
+        . htmlspecialchars($text, ENT_QUOTES, 'UTF-8') . '</div></div>';
+}
+
+/** A one-time code for pages that show their own banner (registered, sent...). */
+function flash_code($code)
+{
+    auth_start();
+    $_SESSION['flash_code'] = $code;
+}
+
+function take_flash_code()
+{
+    auth_start();
+    $code = $_SESSION['flash_code'] ?? '';
+    unset($_SESSION['flash_code']);
+    return $code;
+}
+
 /** Sends the user back to a form with a message and the values they typed. */
 function form_fail($message, $back)
 {

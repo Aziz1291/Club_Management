@@ -13,7 +13,7 @@ class Event{
         $this->pdo=$cnx->Cnx();
     }
     function listEvent(){
-        $req=("SELECT * from events");
+        $req=("SELECT * from events ORDER BY date ASC, id ASC");
         $res=$this->pdo->query($req);
         return $res;
     }

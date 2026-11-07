@@ -5,7 +5,12 @@ include("header.php");
 include("../classes/User.php");
 
 $us = new User();
-$res = $us->list_user();
+$res = $us->list_user()->fetchAll();
+$q = trim($_GET['q'] ?? '');
+if ($q !== '') {
+    $res = array_values(array_filter($res, fn($row) =>
+        stripos($row[1] . ' ' . $row[2] . ' ' . $row[4], $q) !== false));
+}
 ?>
 
 <link rel="stylesheet" href="../assets/css/members.css">
@@ -17,7 +22,7 @@ $res = $us->list_user();
                 <div class="col-md-6">
                     <span class="kicker">Athletic Governance</span>
                     <h2 class="mb-1">Collegiate Member Roster</h2>
-                    <p class="text-muted mb-0">Active athletes, verified members, and athletic department directors.</p>
+                    <p class="text-muted mb-0"><?php if ($q !== ''): ?>Showing <?= count($res) ?> result(s) for &ldquo;<?= htmlspecialchars($q) ?>&rdquo; &middot; <a href="members.php">Clear</a><?php else: ?>Active athletes, verified members, and athletic department directors.<?php endif; ?></p>
                 </div>
                 <div class="col-md-6 text-md-end mt-3 mt-md-0">
                     <a href="addMember.php" class="btn-add-member">

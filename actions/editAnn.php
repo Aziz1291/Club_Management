@@ -9,5 +9,6 @@ $title = form_text('title', 'Title', 150, $back);
 $content = form_text('desc', 'Announcement text', 5000, $back);
 $a = new Announcement();
 $a->updateAnn($title, $content, $_SESSION['id'], $id);
+flash_notice('Announcement updated.');
 header("location:../public/announcements.php");
 ?>
