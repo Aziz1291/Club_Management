@@ -107,6 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <!-- LOGIN BUTTON -->
+            <p id="wake-note" class="text-center" role="status" aria-live="polite" style="display:none;font-size:.9rem;margin:0 0 .75rem">Signing in. If the server was asleep it is starting now, please wait up to a minute; this page will continue by itself.</p>
             <button type="submit" class="btn btn-login">
                 <i class="lni lni-enter"></i> Sign In to Portal
             </button>
@@ -179,6 +180,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             pField.focus();
         }
     }
+
+    document.querySelector('form[method="POST"]').addEventListener('submit', function () {
+        document.getElementById('wake-note').style.display = 'block';
+        var b = this.querySelector('button.btn-login'); if (b) { setTimeout(function () { b.disabled = true; }, 0); }
+    });
 </script>
 
 <p style="text-align:center"><a href="/public/privacy.php">Privacy &amp; cookies</a></p>

@@ -1,3 +1,4 @@
+<?php if (basename($_SERVER['SCRIPT_FILENAME'] ?? '') === basename(__FILE__)) { require_once __DIR__ . '/../auth.php'; require_login(); header('Location: index.php'); exit; } ?>
 <div class="announcements-grid">
     <?php
     require_once('../classes/Announcement.php');
