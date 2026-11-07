@@ -58,7 +58,7 @@ if ($q !== '') {
                                     $name = htmlspecialchars($row[1] ?? 'User');
                                     $email = htmlspecialchars($row[2] ?? '');
                                     $role = htmlspecialchars($row[4] ?? 'member');
-                                    $avatar = !empty($row[5]) ? htmlspecialchars($row[5]) : '../assets/images/profilee.jpg';
+                                    $avatar = htmlspecialchars(get_avatar_url($row[5] ?? ''));
                                     $rolePillClass = $role === 'admin' ? 'pill-admin' : 'pill-member';
                                     $roleLabel = $role === 'admin' ? 'Admin' : 'Member';
                                     ?>

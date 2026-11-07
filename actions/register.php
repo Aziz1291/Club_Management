@@ -8,6 +8,13 @@ require_once('../classes/Event.php');
 $eventId = (int) ($_POST['idEvent'] ?? 0);
 $userId  = (int) ($_SESSION['id'] ?? 0);
 
+// Admins manage events, they do not register for them.
+if (($_SESSION['role'] ?? '') === 'admin') {
+    flash_notice('Admins cannot register for events.', 'error');
+    header('Location: ../public/events.php');
+    exit;
+}
+
 // Past events are closed for registration.
 $event = $eventId > 0 ? (new Event())->getEvent($eventId) : null;
 if (!$event || substr((string) $event['date'], 0, 10) < date('Y-m-d')) {

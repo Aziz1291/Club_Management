@@ -14,7 +14,7 @@ if (!$row) {
     exit;
 }
 
-$currentPic = !empty($row[5]) ? htmlspecialchars($row[5]) : '../assets/images/profilee.jpg';
+$currentPic = htmlspecialchars(get_avatar_url($row[5] ?? ''));
 $role = htmlspecialchars($row[4] ?? 'member');
 $name = htmlspecialchars($row[1] ?? 'Member');
 $email = htmlspecialchars($row[2] ?? '');

@@ -205,10 +205,11 @@ function get_avatar_url($pic)
     if (strpos($pic, 'http://') === 0 || strpos($pic, 'https://') === 0) {
         return $pic;
     }
+    // Only point to an uploaded file that really exists, so the browser never asks for a missing image.
     if (strpos($pic, '../') === 0) {
-        return $pic;
+        $pic = substr($pic, 3);
     }
-    if (strpos($pic, 'uploads/') === 0) {
+    if (strpos($pic, 'uploads/') === 0 && strpos($pic, '..') === false && is_file(__DIR__ . '/' . $pic)) {
         return '../' . $pic;
     }
     return '../assets/images/profilee.jpg';

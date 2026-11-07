@@ -10,6 +10,7 @@ $reg = new Registration();
 $ad = new User();
 
 $currentUserId = (int)($_SESSION['id'] ?? 0);
+$isAdmin = ($_SESSION['role'] ?? '') === 'admin';
 $myRegisteredEventIds = $currentUserId > 0 ? $reg->getRegisteredEventIds($currentUserId) : [];
 
 // Handle search query
@@ -46,7 +47,7 @@ $notice = take_flash_code();
                     <h1 class="page-title">Club Events</h1>
                     <p class="page-subtitle">Register for the events of the club.</p>
                 </div>
-                <div>
+                <div<?= $isAdmin ? ' hidden' : '' ?>>
                     <a href="my_registrations.php" class="view-registrations-btn">
                         <i class="lni lni-ticket"></i> View My Registrations (<?= count($myRegisteredEventIds) ?>)
                     </a>
@@ -155,6 +156,8 @@ $notice = take_flash_code();
                                             <i class="lni lni-ticket"></i> My registrations
                                         </a>
                                     </div>
+                                <?php elseif ($isAdmin): ?>
+                                    <span class="text-muted">Admins manage events from Manage Events.</span>
                                 <?php elseif ($isPast): ?>
                                     <span class="text-muted"><i class="lni lni-lock"></i> Event ended &middot; registration closed</span>
                                 <?php else: ?>
