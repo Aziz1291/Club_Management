@@ -22,6 +22,7 @@ $currentUserId = $_SESSION['id'] ?? 0;
 
                 <?php form_error_box(); ?>
                 <form action="../actions/addAnn.php" method="POST">
+<?= csrf_field() ?>
                     <div class="form-group">
                         <label for="ann-title" class="form-label">Announcement Headline</label>
                         <input type="text" id="ann-title" name="title" class="form-control" placeholder="e.g. Schedule Update: Spring Athletics Invitational" maxlength="150" value="<?= htmlspecialchars(form_old('title')) ?>" required autofocus>

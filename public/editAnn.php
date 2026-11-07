@@ -35,6 +35,7 @@ $authorId = $an[3] ?? 0;
 
                 <?php form_error_box(); ?>
                 <form action="../actions/editAnn.php" method="POST">
+<?= csrf_field() ?>
                     <input type="hidden" name="id" value="<?= htmlspecialchars((string)$an[0]) ?>">
 
                     <div class="form-group">

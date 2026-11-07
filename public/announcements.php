@@ -65,12 +65,14 @@ $as = $a->displayAnn();
                             <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
                                 <div class="announcement-actions">
                                     <form action="editAnn.php" method="POST" class="d-inline">
+<?= csrf_field() ?>
                                         <input type="hidden" value="<?= $id ?>" name="id">
                                         <button type="submit" class="btn-edit">
                                             <i class="lni lni-pencil"></i> Edit
                                         </button>
                                     </form>
                                     <form action="../actions/deleteAnn.php" method="POST" class="d-inline" onsubmit="return confirm('Delete this bulletin?');">
+<?= csrf_field() ?>
                                         <input type="hidden" value="<?= $id ?>" name="id">
                                         <button type="submit" class="btn-delete">
                                             <i class="lni lni-trash-can"></i> Delete

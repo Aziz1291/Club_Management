@@ -65,12 +65,14 @@ $ad = new User();
                                     <td>
                                         <div class="table-actions justify-content-end">
                                             <form action="editEvent.php" method="POST" class="d-inline">
+<?= csrf_field() ?>
                                                 <input type="hidden" value="<?= $id ?>" name="ide">
                                                 <button type="submit" class="btn-edit" aria-label="Edit <?= $title ?>">
                                                     <i class="lni lni-pencil"></i> Edit
                                                 </button>
                                             </form>
                                             <form action="../actions/delEvent.php" method="POST" class="d-inline" onsubmit="return confirm('Delete this scheduled event?');">
+<?= csrf_field() ?>
                                                 <input type="hidden" value="<?= $id ?>" name="ide">
                                                 <button type="submit" class="btn-delete" aria-label="Delete <?= $title ?>">
                                                     <i class="lni lni-trash-can"></i> Delete

@@ -19,6 +19,7 @@ $admins = $ad->listAdmin();
                 
                 <?php form_error_box(); ?>
                 <form class="event-form" id="addEventForm" method="POST" action="../actions/addEvent.php">
+<?= csrf_field() ?>
                     <div class="form-group">
                         <label for="eventTitle" class="form-label">Event / Tournament Title</label>
                         <input type="text" id="eventTitle" name="title" class="form-control" placeholder="e.g. Annual Track & Field Invitational" maxlength="150" value="<?= htmlspecialchars(form_old('title')) ?>" required autofocus>

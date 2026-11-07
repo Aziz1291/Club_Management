@@ -45,6 +45,7 @@ $id = htmlspecialchars((string)$row[0]);
 
             <?php form_error_box(); ?>
             <form class="profile-form" id="profile-form" method="post" action="../actions/editMemberProfile.php" enctype="multipart/form-data">
+<?= csrf_field() ?>
                 <!-- Hidden inputs -->
                 <input type="hidden" name="id" value="<?= $id ?>">
                 <input type="hidden" name="old_img" value="<?= htmlspecialchars($row[5] ?? '') ?>">

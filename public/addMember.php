@@ -28,6 +28,7 @@ include("header.php");
                 <div class="add-member-form-container">
                     <?php form_error_box(); ?>
                     <form action="../actions/addMember.php" method="POST" class="add-member-form" enctype="multipart/form-data">
+<?= csrf_field() ?>
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="username" class="form-label">Athlete Username</label>

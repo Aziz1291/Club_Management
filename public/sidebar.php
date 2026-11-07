@@ -87,10 +87,10 @@ $currentPage = basename($_SERVER['PHP_SELF'] ?? '');
             </li>
 
             <li class="nav-item">
-                <a href="../actions/logout.php">
+                <a href="../actions/logout.php" onclick="this.nextElementSibling.submit(); return false;">
                     <span class="icon"><i class="lni lni-exit"></i></span>
                     <span class="text">Sign Out</span>
-                </a>
+                </a><form method="post" action="../actions/logout.php" hidden><?= csrf_field() ?></form>
             </li>
         </ul>
     </nav>

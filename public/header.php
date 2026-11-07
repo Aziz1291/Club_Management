@@ -196,9 +196,9 @@ require_once __DIR__ . '/../auth.php';
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="../actions/logout.php" class="dropdown-item text-danger"> 
+                                <a href="../actions/logout.php" class="dropdown-item text-danger" onclick="this.nextElementSibling.submit(); return false;"> 
                                     <i class="lni lni-exit"></i> Sign Out 
-                                </a>
+                                </a><form method="post" action="../actions/logout.php" hidden><?= csrf_field() ?></form>
                             </li>
                         </ul>
                     </div>

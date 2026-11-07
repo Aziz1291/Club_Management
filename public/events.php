@@ -148,6 +148,7 @@ foreach ($allEvents as $item) {
                                     </div>
                                 <?php else: ?>
                                     <form action="../actions/register.php" method="POST">
+<?= csrf_field() ?>
                                         <input type="hidden" value="<?= $eventId ?>" name="idEvent">
                                         <input type="hidden" value="<?= $currentUserId ?>" name="idUser">
                                         <button type="submit" class="btn-attend">

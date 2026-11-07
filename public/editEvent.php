@@ -30,6 +30,7 @@ $admins = $ad->listAdmin();
                 
                 <?php form_error_box(); ?>
                 <form class="event-form" id="editEventForm" method="POST" action="../actions/editEvent.php">
+<?= csrf_field() ?>
                     <input type="hidden" name="ide" value="<?= htmlspecialchars((string)$event[0]) ?>">
 
                     <div class="form-group">

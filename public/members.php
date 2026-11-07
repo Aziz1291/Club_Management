@@ -82,12 +82,14 @@ $res = $us->list_user();
                                         <td>
                                             <div class="action-buttons justify-content-end">
                                                 <form action="editMemberProfile.php" method="POST" class="d-inline">
+<?= csrf_field() ?>
                                                     <input type="hidden" name="curid" value="<?= $id ?>">
                                                     <button type="submit" class="btn-edit" aria-label="Edit <?= $name ?>">
                                                         <i class="lni lni-pencil"></i> Edit
                                                     </button>
                                                 </form>
                                                 <form action="../actions/Del.php" method="POST" class="d-inline" onsubmit="return confirm('Remove athlete from roster?');">
+<?= csrf_field() ?>
                                                     <input type="hidden" name="curid" value="<?= $id ?>">
                                                     <button type="submit" class="btn-delete" aria-label="Delete <?= $name ?>">
                                                         <i class="lni lni-trash-can"></i> Remove

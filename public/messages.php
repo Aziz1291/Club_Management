@@ -40,6 +40,7 @@ $msgList = $messages ? $messages->fetchAll(PDO::FETCH_ASSOC) : [];
                     </h3>
                     <?php form_error_box(); ?>
                     <form class="message-form" action="../actions/send_message.php" method="POST">
+<?= csrf_field() ?>
                         <div class="form-group">
                             <label class="form-label" for="receiver_id">Select Recipient</label>
                             <select id="receiver_id" name="receiver_id" class="form-select" required>
@@ -129,6 +130,7 @@ $msgList = $messages ? $messages->fetchAll(PDO::FETCH_ASSOC) : [];
 function markMessageAsRead(messageId, btnEl) {
     const formData = new FormData();
     formData.append('message_id', messageId);
+    formData.append('csrf_token', <?= json_encode(csrf_token()) ?>);
 
     fetch('../actions/mark_message_read.php', {
         method: 'POST',
