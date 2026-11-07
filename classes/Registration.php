@@ -38,9 +38,7 @@ class Registration{
             e.date,
             e.location,
             e.admin_Id,
-            e.created_at AS event_created_at,
-            r.id AS registration_id,
-            r.created_at AS registration_created_at
+            r.id AS registration_id
             FROM registrations r 
             JOIN events e ON r.event_id = e.id 
             WHERE r.member_id = ?
