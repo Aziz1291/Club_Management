@@ -4,6 +4,8 @@
  * Included by the pages in public/ and the scripts in actions/.
  */
 
+require_once __DIR__ . '/error-page.php';
+
 function auth_start()
 {
     if (session_status() === PHP_SESSION_NONE) {
@@ -44,6 +46,62 @@ function require_post()
         http_response_code(405);
         exit('Method not allowed.');
     }
+}
+
+/** Sends the user back to a form with a message and the values they typed. */
+function form_fail($message, $back)
+{
+    auth_start();
+    $_SESSION['form_error'] = $message;
+    $_SESSION['form_old'] = $_POST;
+    header('Location: ' . $back);
+    exit;
+}
+
+/** Prints the message saved by form_fail(), once, and keeps the typed values for form_old(). */
+function form_error_box()
+{
+    auth_start();
+    $GLOBALS['form_old_values'] = $_SESSION['form_old'] ?? [];
+    unset($_SESSION['form_old']);
+    if (!empty($_SESSION['form_error'])) {
+        echo '<div class="club-alert club-alert-danger" role="alert">' . htmlspecialchars($_SESSION['form_error']) . '</div>';
+        unset($_SESSION['form_error']);
+    }
+}
+
+/** A value the user typed before the form was rejected, or $default. */
+function form_old($key, $default = '')
+{
+    $value = $GLOBALS['form_old_values'][$key] ?? $default;
+    return is_string($value) ? $value : $default;
+}
+
+/** Trimmed text from the posted form, rejected when empty (if required) or longer than $max. */
+function form_text($key, $label, $max, $back, $required = true)
+{
+    $value = trim((string) ($_POST[$key] ?? ''));
+    if ($required && $value === '') {
+        form_fail("$label is required.", $back);
+    }
+    if (mb_strlen($value) > $max) {
+        form_fail("$label must be $max characters or fewer.", $back);
+    }
+    return $value;
+}
+
+/** A posted date in YYYY-MM-DD form that is today or later. */
+function form_future_date($key, $label, $back)
+{
+    $value = trim((string) ($_POST[$key] ?? ''));
+    $date = DateTime::createFromFormat('Y-m-d', $value);
+    if (!$date || $date->format('Y-m-d') !== $value) {
+        form_fail("$label is not a valid date.", $back);
+    }
+    if ($value < date('Y-m-d')) {
+        form_fail("$label cannot be in the past.", $back);
+    }
+    return $value;
 }
 
 /**

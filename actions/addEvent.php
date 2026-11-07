@@ -3,7 +3,16 @@ require_once('../auth.php');
 require_admin();
 require_post();
 require_once('../classes/Event.php');
+$back = '../public/addEvent.php';
+$title = form_text('title', 'Title', 150, $back);
+$description = form_text('description', 'Description', 2000, $back);
+$date = form_future_date('date', 'Event date', $back);
+$location = form_text('location', 'Venue', 150, $back);
+$adminId = (int) ($_POST['admin_id'] ?? 0);
+if ($adminId <= 0) {
+    form_fail('Choose who runs the event.', $back);
+}
 $ev = new Event();
-$ev->addEvent($_POST['title'], $_POST['description'], $_POST['date'], $_POST['location'], (int) $_POST['admin_id']);
+$ev->addEvent($title, $description, $date, $location, $adminId);
 header("location:../public/manage_events.php");
 ?>

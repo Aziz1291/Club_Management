@@ -20,15 +20,16 @@ $currentUserId = $_SESSION['id'] ?? 0;
                     <h2>Post Official Announcement</h2>
                 </div>
 
+                <?php form_error_box(); ?>
                 <form action="../actions/addAnn.php" method="POST">
                     <div class="form-group">
                         <label for="ann-title" class="form-label">Announcement Headline</label>
-                        <input type="text" id="ann-title" name="title" class="form-control" placeholder="e.g. Schedule Update: Spring Athletics Invitational" required autofocus>
+                        <input type="text" id="ann-title" name="title" class="form-control" placeholder="e.g. Schedule Update: Spring Athletics Invitational" maxlength="150" value="<?= htmlspecialchars(form_old('title')) ?>" required autofocus>
                     </div>
 
                     <div class="form-group">
                         <label for="ann-content" class="form-label">Dispatch Brief / Content</label>
-                        <textarea id="ann-content" name="desc" class="form-control" rows="5" placeholder="Write the complete announcement text..." required></textarea>
+                        <textarea id="ann-content" name="desc" class="form-control" rows="5" placeholder="Write the complete announcement text..." maxlength="5000" required><?= htmlspecialchars(form_old('desc')) ?></textarea>
                     </div>
 
                     <div class="form-group">

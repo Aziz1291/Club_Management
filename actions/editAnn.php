@@ -3,7 +3,11 @@ require_once('../auth.php');
 require_admin();
 require_post();
 require_once('../classes/Announcement.php');
+$id = (int) ($_POST['id'] ?? 0);
+$back = '../public/editAnn.php?id=' . $id;
+$title = form_text('title', 'Title', 150, $back);
+$content = form_text('desc', 'Announcement text', 5000, $back);
 $a = new Announcement();
-$a->updateAnn($_POST['title'], $_POST['desc'], $_SESSION['id'], (int) $_POST['id']);
+$a->updateAnn($title, $content, $_SESSION['id'], $id);
 header("location:../public/announcements.php");
 ?>

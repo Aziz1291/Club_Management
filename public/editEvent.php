@@ -28,30 +28,31 @@ $admins = $ad->listAdmin();
                 <span class="kicker">Tournament Director</span>
                 <h2 class="form-title">Edit Scheduled Event</h2>
                 
+                <?php form_error_box(); ?>
                 <form class="event-form" id="editEventForm" method="POST" action="../actions/editEvent.php">
                     <input type="hidden" name="ide" value="<?= htmlspecialchars((string)$event[0]) ?>">
 
                     <div class="form-group">
                         <label for="eventTitle" class="form-label">Event / Tournament Title</label>
-                        <input type="text" value="<?= htmlspecialchars($event[1] ?? '') ?>" id="eventTitle" name="title" class="form-control" required autofocus>
+                        <input type="text" value="<?= htmlspecialchars(form_old('title', $event[1] ?? '')) ?>" id="eventTitle" name="title" class="form-control" maxlength="150" required autofocus>
                     </div>
 
                     <div class="form-group">
                         <label for="eventDescription" class="form-label">Event Brief &amp; Regulations</label>
-                        <textarea id="eventDescription" name="description" class="form-control" rows="4" required><?= htmlspecialchars($event[2] ?? '') ?></textarea>
+                        <textarea id="eventDescription" name="description" class="form-control" rows="4" maxlength="2000" required><?= htmlspecialchars(form_old('description', $event[2] ?? '')) ?></textarea>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <div class="form-group mb-0">
                                 <label for="eventDate" class="form-label">Event Date</label>
-                                <input type="date" value="<?= htmlspecialchars($event[3] ?? '') ?>" id="eventDate" name="date" class="form-control" required>
+                                <input type="date" value="<?= htmlspecialchars(form_old('date', $event[3] ?? '')) ?>" id="eventDate" name="date" class="form-control" min="<?= date('Y-m-d') ?>" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-0">
                                 <label for="eventLocation" class="form-label">Facility / Venue</label>
-                                <input type="text" value="<?= htmlspecialchars($event[4] ?? '') ?>" id="eventLocation" name="location" class="form-control" required>
+                                <input type="text" value="<?= htmlspecialchars(form_old('location', $event[4] ?? '')) ?>" id="eventLocation" name="location" class="form-control" maxlength="150" required>
                             </div>
                         </div>
                     </div>

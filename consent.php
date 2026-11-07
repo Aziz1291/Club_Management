@@ -1,5 +1,6 @@
 <?php
 // This file runs before application PHP scripts through Apache configuration.
+require_once __DIR__ . '/error-page.php';
 if (basename($_SERVER['SCRIPT_FILENAME'] ?? '') === 'privacy.php') { return; }
 $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || strtolower($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https';
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && isset($_POST['club_notice_accept']) && $_POST['club_notice_accept'] === '1' && ($_POST['privacy_acknowledged'] ?? '') === '1') {

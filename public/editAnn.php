@@ -33,17 +33,18 @@ $authorId = $an[3] ?? 0;
                     <h2>Edit Announcement #ANN-<?= htmlspecialchars((string)$an[0]) ?></h2>
                 </div>
 
+                <?php form_error_box(); ?>
                 <form action="../actions/editAnn.php" method="POST">
                     <input type="hidden" name="id" value="<?= htmlspecialchars((string)$an[0]) ?>">
 
                     <div class="form-group">
                         <label for="ann-title" class="form-label">Announcement Headline</label>
-                        <input type="text" id="ann-title" name="title" class="form-control" value="<?= $title ?>" required autofocus>
+                        <input type="text" id="ann-title" name="title" class="form-control" value="<?= htmlspecialchars(form_old('title', $an[1] ?? '')) ?>" maxlength="150" required autofocus>
                     </div>
 
                     <div class="form-group">
                         <label for="ann-content" class="form-label">Dispatch Brief / Content</label>
-                        <textarea id="ann-content" name="desc" class="form-control" rows="5" required><?= $desc ?></textarea>
+                        <textarea id="ann-content" name="desc" class="form-control" rows="5" maxlength="5000" required><?= htmlspecialchars(form_old('desc', $an[2] ?? '')) ?></textarea>
                     </div>
 
                     <div class="form-group">
