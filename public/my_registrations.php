@@ -98,8 +98,8 @@ $totalPasses = count($regList);
                             </div>
                             
                             <div class="registration-actions">
-                                <form action="../actions/cancel_registration.php" method="POST" onsubmit="return confirm('Withdraw your registration for &ldquo;<?= addslashes($title) ?>
-<?= csrf_field() ?>&rdquo;?');">
+                                <form action="../actions/cancel_registration.php" method="POST" onsubmit="return confirm('Withdraw your registration for &ldquo;<?= addslashes($title) ?>&rdquo;?');">
+                                    <?= csrf_field() ?>
                                     <input type="hidden" name="registration_id" value="<?= $regId ?>">
                                     <button type="submit" class="btn-cancel-reg">
                                         <i class="lni lni-close"></i> Cancel Registration
