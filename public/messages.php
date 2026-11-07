@@ -38,6 +38,7 @@ $msgList = $messages ? $messages->fetchAll(PDO::FETCH_ASSOC) : [];
                     <h3 class="section-title">
                         <i class="lni lni-pencil-alt"></i> Compose Dispatch
                     </h3>
+                    <?php form_error_box(); ?>
                     <form class="message-form" action="../actions/send_message.php" method="POST">
                         <div class="form-group">
                             <label class="form-label" for="receiver_id">Select Recipient</label>
@@ -54,7 +55,7 @@ $msgList = $messages ? $messages->fetchAll(PDO::FETCH_ASSOC) : [];
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="message_content">Dispatch Content</label>
-                            <textarea id="message_content" name="content" class="form-textarea" placeholder="Type your message or inquiry here..." required></textarea>
+                            <textarea id="message_content" name="content" class="form-textarea" placeholder="Type your message or inquiry here..." maxlength="2000" required><?= htmlspecialchars(form_old('content')) ?></textarea>
                         </div>
                         <button type="submit" class="btn-send">
                             <i class="lni lni-telegram-original"></i> Send Dispatch

@@ -26,21 +26,22 @@ include("header.php");
         <div class="row">
             <div class="col-12">
                 <div class="add-member-form-container">
+                    <?php form_error_box(); ?>
                     <form action="../actions/addMember.php" method="POST" class="add-member-form" enctype="multipart/form-data">
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="username" class="form-label">Athlete Username</label>
-                                <input type="text" id="username" name="username" class="form-control" placeholder="e.g. j_miller" required autofocus>
+                                <input type="text" id="username" name="username" class="form-control" placeholder="e.g. j_miller" minlength="3" maxlength="50" value="<?= htmlspecialchars(form_old('username')) ?>" required autofocus>
                             </div>
 
                             <div class="form-group">
                                 <label for="email" class="form-label">Collegiate Email Address</label>
-                                <input type="email" id="email" name="email" class="form-control" placeholder="athlete@university.edu" required>
+                                <input type="email" id="email" name="email" class="form-control" placeholder="athlete@university.edu" maxlength="100" value="<?= htmlspecialchars(form_old('email')) ?>" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="password" class="form-label">Temporary Password</label>
-                                <input type="password" id="password" name="password" class="form-control" placeholder="Minimum 6 characters" required>
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Minimum 6 characters" minlength="6" required>
                             </div>
 
                             <div class="form-group">

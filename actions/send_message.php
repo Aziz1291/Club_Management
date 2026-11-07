@@ -3,16 +3,17 @@ require_once('../auth.php');
 require_login();
 require_post();
 require_once('../classes/Message.php');
+require_once('../classes/User.php');
 
-$content = trim($_POST['content'] ?? '');
+$back = '../public/messages.php';
+$content = form_text('content', 'Message', 2000, $back);
 $receiverId = (int)($_POST['receiver_id'] ?? 0);
-
-if ($content !== '' && $receiverId > 0) {
-    $m = new Message();
-    $m->sendMessage((int) $_SESSION['id'], $receiverId, $content);
-    header('Location: ../public/messages.php?sent=1');
-    exit;
+if ($receiverId <= 0 || !(new User())->getUser($receiverId)) {
+    form_fail('Choose who should receive the message.', $back);
 }
-header('Location: ../public/messages.php');
+
+$m = new Message();
+$m->sendMessage((int) $_SESSION['id'], $receiverId, $content);
+header('Location: ../public/messages.php?sent=1');
 exit;
 ?>

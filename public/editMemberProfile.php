@@ -43,6 +43,7 @@ $id = htmlspecialchars((string)$row[0]);
                 </p>
             </div>
 
+            <?php form_error_box(); ?>
             <form class="profile-form" id="profile-form" method="post" action="../actions/editMemberProfile.php" enctype="multipart/form-data">
                 <!-- Hidden inputs -->
                 <input type="hidden" name="id" value="<?= $id ?>">
@@ -61,19 +62,19 @@ $id = htmlspecialchars((string)$row[0]);
                     <div class="col-md-8">
                         <div class="form-group mb-0">
                             <label for="user-name" class="form-label">Full Name</label>
-                            <input type="text" id="user-name" name="name" class="form-control" value="<?= $name ?>" required>
+                            <input type="text" id="user-name" name="name" class="form-control" value="<?= htmlspecialchars(form_old('name', html_entity_decode($name))) ?>" minlength="3" maxlength="50" required>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="user-email" class="form-label">Collegiate Email Address</label>
-                    <input type="email" id="user-email" name="email" class="form-control" value="<?= $email ?>" required>
+                    <input type="email" id="user-email" name="email" class="form-control" value="<?= htmlspecialchars(form_old('email', html_entity_decode($email))) ?>" maxlength="100" required>
                 </div>
 
                 <div class="form-group">
                     <label for="user-password" class="form-label">Password Override</label>
-                    <input type="password" id="user-password" name="pwd" class="form-control" placeholder="Leave blank to maintain current credentials">
+                    <input type="password" id="user-password" name="pwd" class="form-control" minlength="6" placeholder="Leave blank to maintain current credentials">
                     <small class="text-muted">Enter a new password only if overriding this athlete's credentials.</small>
                 </div>
 

@@ -3,8 +3,9 @@ require_once('../auth.php');
 require_admin();
 require_post();
 include('../classes/User.php');
-$role = in_array($_POST['role'], ['admin', 'member'], true) ? $_POST['role'] : 'member';
+$role = in_array($_POST['role'] ?? '', ['admin', 'member'], true) ? $_POST['role'] : 'member';
 $u = new User();
-$u->addUser($_POST['username'], $_POST['email'], $_POST['password'], $role); // addUser hashes the password
+[$name, $email, $password] = form_account('../public/addMember.php', $u, 0, 'username', 'password', true);
+$u->addUser($name, $email, $password, $role); // addUser hashes the password
 header('location:../public/members.php');
 ?>

@@ -90,6 +90,32 @@ function form_text($key, $label, $max, $back, $required = true)
     return $value;
 }
 
+/**
+ * Checks the account fields shared by the profile, member-edit and add-member forms.
+ * The password is optional when $passwordRequired is false (blank keeps the current one).
+ * Returns [username, email, password].
+ */
+function form_account($back, $user, $exceptId = 0, $nameKey = 'name', $passwordKey = 'pwd', $passwordRequired = false)
+{
+    $name = form_text($nameKey, 'Username', 50, $back);
+    if (mb_strlen($name) < 3) {
+        form_fail('Username must be at least 3 characters long.', $back);
+    }
+    $email = form_text('email', 'Email', 100, $back);
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        form_fail('Enter a valid email address.', $back);
+    }
+    $password = (string) ($_POST[$passwordKey] ?? '');
+    if (($passwordRequired || $password !== '') && mb_strlen($password) < 6) {
+        form_fail('Password must be at least 6 characters long.', $back);
+    }
+    $taken = $user->takenBy($name, $email, $exceptId);
+    if ($taken) {
+        form_fail("That $taken is already used by another account.", $back);
+    }
+    return [$name, $email, $password];
+}
+
 /** A posted date in YYYY-MM-DD form that is today or later. */
 function form_future_date($key, $label, $back)
 {

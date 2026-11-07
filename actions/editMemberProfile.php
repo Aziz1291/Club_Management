@@ -4,11 +4,8 @@ require_admin();
 require_post();
 require_once('../classes/User.php');
 
-$id    = (int) $_POST['id'];
-$name  = trim($_POST['name']);
-$email = trim($_POST['email']);
-$pwd   = trim($_POST['pwd']);
-$role  = in_array($_POST['role'], ['admin', 'member'], true) ? $_POST['role'] : 'member';
+$id   = (int) ($_POST['id'] ?? 0);
+$role = in_array($_POST['role'] ?? '', ['admin', 'member'], true) ? $_POST['role'] : 'member';
 
 $us  = new User();
 $cur = $us->getUser($id);
@@ -16,6 +13,8 @@ if (!$cur) {
     header('Location: ../public/members.php');
     exit;
 }
+
+[$name, $email, $pwd] = form_account('../public/editMemberProfile.php?id=' . $id, $us, $id);
 
 // Profile picture: validated by MIME type; the old file comes from the database, not the form
 $imgPath = save_profile_image($_FILES['profile_image'] ?? [], $id, $cur['profile_picture'], $imgError) ?? $cur['profile_picture'];

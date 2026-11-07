@@ -93,5 +93,13 @@ function getUser($id){
         $res=$this->pdo->prepare($req);
         $res->execute([$n,$em,password_hash($pwd,PASSWORD_DEFAULT),$role]);
     }
+    // Which of the username or email already belongs to another account, if any.
+    function takenBy($username, $email, $exceptId = 0){
+        $req=$this->pdo->prepare("SELECT username, email FROM users WHERE (username=? OR email=?) AND id<>? LIMIT 1");
+        $req->execute([$username, $email, (int)$exceptId]);
+        $row=$req->fetch();
+        if (!$row) return null;
+        return strcasecmp($row['username'], $username) === 0 ? 'username' : 'email';
+    }
 
 }
