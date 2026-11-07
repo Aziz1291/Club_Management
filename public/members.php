@@ -41,9 +41,9 @@ if ($q !== '') {
                                 <th scope="col">ID</th>
                                 <th scope="col">Member</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Division Role</th>
-                                <th scope="col">Account Status</th>
-                                <th scope="col" style="text-align: right;">Administrative Actions</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" style="text-align: right;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>

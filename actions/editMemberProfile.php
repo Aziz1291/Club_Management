@@ -2,6 +2,7 @@
 require_once('../auth.php');
 require_admin();
 require_post();
+form_collect();
 require_once('../classes/User.php');
 
 $id   = (int) ($_POST['id'] ?? 0);
@@ -14,7 +15,9 @@ if (!$cur) {
     exit;
 }
 
-[$name, $email, $pwd] = form_account('../public/editMemberProfile.php?id=' . $id, $us, $id);
+$back = '../public/editMemberProfile.php?id=' . $id;
+[$name, $email, $pwd] = form_account($back, $us, $id);
+form_done($back);
 
 // Profile picture: validated by MIME type; the old file comes from the database, not the form
 $imgPath = save_profile_image($_FILES['profile_image'] ?? [], $id, $cur['profile_picture'], $imgError) ?? $cur['profile_picture'];

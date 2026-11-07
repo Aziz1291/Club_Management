@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <img src="../assets/images/logo/logo.svg" alt="Club Crest">
             </div>
             <span class="kicker">ClubManager</span>
-            <h1 class="h3">Portal Sign In</h1>
+            <h1 class="h3">Sign in</h1>
             <p class="login-subtitle">Academic demo: explore members, events, and messages. Use sample information only.</p>
         </div>
 

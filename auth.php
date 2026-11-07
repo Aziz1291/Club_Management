@@ -34,9 +34,30 @@ function require_admin()
 {
     require_login();
     if (($_SESSION['role'] ?? '') !== 'admin') {
-        http_response_code(403);
-        exit('Forbidden: administrators only.');
+        forbidden_page();
     }
+}
+
+/** A readable 403 page: inside the app layout for pages, a small styled page for action scripts. */
+function forbidden_page()
+{
+    http_response_code(403);
+    $message = 'This page is for administrators only. Your account is a regular member account.';
+    if (basename(dirname($_SERVER['SCRIPT_NAME'])) === 'actions') {
+        echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
+            . '<title>Access denied</title></head>'
+            . '<body style="font-family:system-ui,sans-serif;max-width:32rem;margin:15vh auto;padding:0 1rem;color:#1f2937">'
+            . '<h1 style="font-size:1.5rem">Access denied</h1><p>' . $message . '</p>'
+            . '<p><a href="../public/index.php">Back to the dashboard</a></p></body></html>';
+        exit;
+    }
+    include __DIR__ . '/public/header.php';
+    echo '<section class="section"><div class="container-fluid"><div class="text-center mx-auto" style="max-width:32rem;padding:3rem 0">'
+        . '<h2 class="mb-3">Access denied</h2><p class="mb-4">' . $message . '</p>'
+        . '<a href="index.php" class="btn btn-primary">Back to the dashboard</a>'
+        . '</div></div></section>';
+    include __DIR__ . '/public/footer.php';
+    exit;
 }
 
 /** One token per session, sent with every form that changes data. */
@@ -114,11 +135,32 @@ function take_flash_code()
 /** Sends the user back to a form with a message and the values they typed. */
 function form_fail($message, $back)
 {
+    if (!empty($GLOBALS['form_collecting'])) {
+        $GLOBALS['form_errors'][] = $message; // keep going; form_done() sends them all back together
+        return;
+    }
     auth_start();
     $_SESSION['form_error'] = $message;
     $_SESSION['form_old'] = $_POST;
     header('Location: ' . $back);
     exit;
+}
+
+/** Call at the top of an action to gather every field error instead of stopping at the first one. */
+function form_collect()
+{
+    $GLOBALS['form_collecting'] = true;
+    $GLOBALS['form_errors'] = [];
+}
+
+/** After all the checks: if any failed, send the user back with the full list of messages. */
+function form_done($back)
+{
+    $errors = $GLOBALS['form_errors'] ?? [];
+    $GLOBALS['form_collecting'] = false;
+    if ($errors) {
+        form_fail($errors, $back);
+    }
 }
 
 /** Prints the message saved by form_fail(), once, and keeps the typed values for form_old(). */
@@ -128,7 +170,17 @@ function form_error_box()
     $GLOBALS['form_old_values'] = $_SESSION['form_old'] ?? [];
     unset($_SESSION['form_old']);
     if (!empty($_SESSION['form_error'])) {
-        echo '<div class="club-alert club-alert-danger" role="alert">' . htmlspecialchars($_SESSION['form_error']) . '</div>';
+        $messages = (array) $_SESSION['form_error'];
+        if (count($messages) === 1) {
+            $html = htmlspecialchars($messages[0]);
+        } else {
+            $html = '<ul class="mb-0 ps-3">';
+            foreach ($messages as $m) {
+                $html .= '<li>' . htmlspecialchars($m) . '</li>';
+            }
+            $html .= '</ul>';
+        }
+        echo '<div class="club-alert club-alert-danger" role="alert">' . $html . '</div>';
         unset($_SESSION['form_error']);
     }
 }
@@ -160,21 +212,25 @@ function form_text($key, $label, $max, $back, $required = true)
  */
 function form_account($back, $user, $exceptId = 0, $nameKey = 'name', $passwordKey = 'pwd', $passwordRequired = false)
 {
+    $before = count($GLOBALS['form_errors'] ?? []);
     $name = form_text($nameKey, 'Username', 50, $back);
-    if (mb_strlen($name) < 3) {
+    if ($name !== '' && mb_strlen($name) < 3) {
         form_fail('Username must be at least 3 characters long.', $back);
     }
     $email = form_text('email', 'Email', 100, $back);
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         form_fail('Enter a valid email address.', $back);
     }
     $password = (string) ($_POST[$passwordKey] ?? '');
     if (($passwordRequired || $password !== '') && mb_strlen($password) < 6) {
         form_fail('Password must be at least 6 characters long.', $back);
     }
-    $taken = $user->takenBy($name, $email, $exceptId);
-    if ($taken) {
-        form_fail("That $taken is already used by another account.", $back);
+    // Only look for duplicates when the name and email themselves are fine.
+    if (count($GLOBALS['form_errors'] ?? []) === $before) {
+        $taken = $user->takenBy($name, $email, $exceptId);
+        if ($taken) {
+            form_fail("That $taken is already used by another account.", $back);
+        }
     }
     return [$name, $email, $password];
 }
@@ -186,8 +242,7 @@ function form_future_date($key, $label, $back)
     $date = DateTime::createFromFormat('Y-m-d', $value);
     if (!$date || $date->format('Y-m-d') !== $value) {
         form_fail("$label is not a valid date.", $back);
-    }
-    if ($value < date('Y-m-d')) {
+    } elseif ($value < date('Y-m-d')) {
         form_fail("$label cannot be in the past.", $back);
     }
     return $value;

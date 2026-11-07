@@ -26,7 +26,7 @@ $admins = $ad->listAdmin();
         <div class="event-form-container">
             <div class="form-card">
                 <span class="kicker">Admin</span>
-                <h2 class="form-title">Edit Scheduled Event</h2>
+                <h2 class="form-title">Edit event</h2>
                 
                 <?php form_error_box(); ?>
                 <form class="event-form" id="editEventForm" method="POST" action="../actions/editEvent.php">
@@ -34,12 +34,12 @@ $admins = $ad->listAdmin();
                     <input type="hidden" name="ide" value="<?= htmlspecialchars((string)$event[0]) ?>">
 
                     <div class="form-group">
-                        <label for="eventTitle" class="form-label">Event / Tournament Title</label>
+                        <label for="eventTitle" class="form-label">Event title</label>
                         <input type="text" value="<?= htmlspecialchars(form_old('title', $event[1] ?? '')) ?>" id="eventTitle" name="title" class="form-control" maxlength="150" required autofocus>
                     </div>
 
                     <div class="form-group">
-                        <label for="eventDescription" class="form-label">Event Brief &amp; Regulations</label>
+                        <label for="eventDescription" class="form-label">Description</label>
                         <textarea id="eventDescription" name="description" class="form-control" rows="4" maxlength="2000" required><?= htmlspecialchars(form_old('description', $event[2] ?? '')) ?></textarea>
                     </div>
 
@@ -52,14 +52,14 @@ $admins = $ad->listAdmin();
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-0">
-                                <label for="eventLocation" class="form-label">Facility / Venue</label>
+                                <label for="eventLocation" class="form-label">Location</label>
                                 <input type="text" value="<?= htmlspecialchars(form_old('location', $event[4] ?? '')) ?>" id="eventLocation" name="location" class="form-control" maxlength="150" required>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="eventAdmin" class="form-label">Presiding Director / Coach</label>
+                        <label for="eventAdmin" class="form-label">Organizer</label>
                         <select id="eventAdmin" name="admin_id" class="form-control" required>
                             <option value="">Choose an administrator...</option>
                             <?php foreach ($admins as $admin): ?>

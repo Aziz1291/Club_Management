@@ -39,7 +39,7 @@ $authorId = $an[3] ?? 0;
                     <input type="hidden" name="id" value="<?= htmlspecialchars((string)$an[0]) ?>">
 
                     <div class="form-group">
-                        <label for="ann-title" class="form-label">Announcement Headline</label>
+                        <label for="ann-title" class="form-label">Title</label>
                         <input type="text" id="ann-title" name="title" class="form-control" value="<?= htmlspecialchars(form_old('title', $an[1] ?? '')) ?>" maxlength="150" required autofocus>
                     </div>
 
@@ -49,7 +49,7 @@ $authorId = $an[3] ?? 0;
                     </div>
 
                     <div class="form-group">
-                        <label for="admin_id" class="form-label">Publishing Authority / Director</label>
+                        <label for="admin_id" class="form-label">Published by</label>
                         <select id="admin_id" name="idA" class="form-control" required>
                             <option value="">Select an administrator...</option>
                             <?php foreach ($admins as $user): ?>

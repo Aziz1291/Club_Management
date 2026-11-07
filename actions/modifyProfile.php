@@ -2,6 +2,7 @@
 require_once('../auth.php');
 require_login();
 require_post();
+form_collect();
 require_once('../classes/User.php');
 
 // A user can only edit their own profile and cannot change their own role
@@ -9,7 +10,9 @@ $id  = (int) $_SESSION['id'];
 $us  = new User();
 $cur = $us->getUser($id);
 
-[$name, $email, $pwd] = form_account('../public/profile.php', $us, $id);
+$back = '../public/profile.php';
+[$name, $email, $pwd] = form_account($back, $us, $id);
+form_done($back);
 
 $imgPath = save_profile_image($_FILES['profile_image'] ?? [], $id, $cur['profile_picture'], $imgError);
 if ($imgError) {

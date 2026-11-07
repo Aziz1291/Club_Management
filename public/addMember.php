@@ -12,7 +12,7 @@ include("header.php");
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <span class="kicker">Admin</span>
-                    <h2 class="mb-1">Enroll New Member</h2>
+                    <h2 class="mb-1">Add member</h2>
                     <p class="text-muted mb-0">Add a member or an admin to the club.</p>
                 </div>
                 <div class="col-md-6 text-md-end mt-3 mt-md-0">
@@ -41,12 +41,12 @@ include("header.php");
                             </div>
 
                             <div class="form-group">
-                                <label for="password" class="form-label">Temporary Password</label>
+                                <label for="password" class="form-label">Password</label>
                                 <input type="password" id="password" name="password" class="form-control" placeholder="Minimum 6 characters" minlength="6" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="role" class="form-label">Division &amp; Permissions Role</label>
+                                <label for="role" class="form-label">Role</label>
                                 <div class="select-style-1">
                                     <select id="role" name="role" class="form-control" required>
                                         <option value="member">Member</option>

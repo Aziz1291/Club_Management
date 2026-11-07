@@ -23,7 +23,7 @@ $ad = new User();
                 </div>
                 <div>
                     <a href="addEvent.php" class="btn-add-event">
-                        <i class="lni lni-plus"></i> Schedule New Event
+                        <i class="lni lni-plus"></i> New event
                     </a>
                 </div>
             </div>
@@ -33,9 +33,9 @@ $ad = new User();
                     <thead>
                         <tr>
                             <th scope="col">Event Title</th>
-                            <th scope="col">Schedule Date</th>
-                            <th scope="col">Location / Venue</th>
-                            <th scope="col">Event Director</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Organizer</th>
                             <th scope="col">Description</th>
                             <th scope="col" style="text-align: right;">Actions</th>
                         </tr>

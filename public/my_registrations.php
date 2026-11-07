@@ -70,7 +70,7 @@ $totalPasses = count($regList);
                                         <span class="pass-id-tag">#REG-<?= str_pad((string)$regId, 3, '0', STR_PAD_LEFT) ?></span>
                                         <span class="event-id-chip"><i class="lni lni-tag"></i> #EVT-<?= str_pad((string)$eventId, 2, '0', STR_PAD_LEFT) ?></span>
                                     </div>
-                                    <span class="pill tone-olive"><i class="lni lni-checkmark-circle"></i> Confirmed Entry</span>
+                                    <span class="pill tone-olive"><i class="lni lni-checkmark-circle"></i> Registered</span>
                                 </div>
                                 <h3 class="registration-title"><?= $title ?></h3>
                                 <span class="registration-date">

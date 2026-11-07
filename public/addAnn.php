@@ -17,15 +17,15 @@ $currentUserId = $_SESSION['id'] ?? 0;
             <div class="ann-form-card">
                 <div class="form-header">
                     <span class="kicker">Announcements</span>
-                    <h2>Post Official Announcement</h2>
+                    <h2>New announcement</h2>
                 </div>
 
                 <?php form_error_box(); ?>
                 <form action="../actions/addAnn.php" method="POST">
 <?= csrf_field() ?>
                     <div class="form-group">
-                        <label for="ann-title" class="form-label">Announcement Headline</label>
-                        <input type="text" id="ann-title" name="title" class="form-control" placeholder="e.g. Schedule Update: Spring Athletics Invitational" maxlength="150" value="<?= htmlspecialchars(form_old('title')) ?>" required autofocus>
+                        <label for="ann-title" class="form-label">Title</label>
+                        <input type="text" id="ann-title" name="title" class="form-control" placeholder="e.g. New training schedule" maxlength="150" value="<?= htmlspecialchars(form_old('title')) ?>" required autofocus>
                     </div>
 
                     <div class="form-group">
@@ -34,7 +34,7 @@ $currentUserId = $_SESSION['id'] ?? 0;
                     </div>
 
                     <div class="form-group">
-                        <label for="admin_id" class="form-label">Publishing Authority / Director</label>
+                        <label for="admin_id" class="form-label">Published by</label>
                         <select id="admin_id" name="idA" class="form-control" required>
                             <option value="">Select an administrator...</option>
                             <?php foreach ($admins as $user): ?>

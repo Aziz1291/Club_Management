@@ -49,7 +49,7 @@ require_once __DIR__ . '/../auth.php';
             <div class="col-lg-5 col-md-5 col-6">
                 <div class="header-left d-flex align-items-center">
                     <div class="menu-toggle-btn">
-                        <button id="menu-toggle" class="main-btn" aria-label="Toggle Navigation Rail">
+                        <button id="menu-toggle" class="main-btn" aria-label="Toggle menu">
                             <i class="lni lni-menu"></i>
                             <span class="d-none d-sm-inline">Menu</span>
                         </button>

@@ -16,7 +16,7 @@ $as = $a->displayAnn();
             <div class="page-header">
                 <div>
                     <span class="kicker">Announcements</span>
-                    <h1 class="page-title">Official Announcements</h1>
+                    <h1 class="page-title">Announcements</h1>
                     <p class="page-subtitle">Official directives, schedule updates, and club announcements from administration.</p>
                 </div>
                 <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>

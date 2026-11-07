@@ -46,7 +46,7 @@ $notice = take_flash_code();
                     <form class="message-form" action="../actions/send_message.php" method="POST">
 <?= csrf_field() ?>
                         <div class="form-group">
-                            <label class="form-label" for="receiver_id">Select Recipient</label>
+                            <label class="form-label" for="receiver_id">Send to</label>
                             <select id="receiver_id" name="receiver_id" class="form-select" required>
                                 <option value="">Choose a member...</option>
                                 <?php foreach ($users as $user): ?>
@@ -60,7 +60,7 @@ $notice = take_flash_code();
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="message_content">Message</label>
-                            <textarea id="message_content" name="content" class="form-textarea" placeholder="Type your message or inquiry here..." maxlength="2000" required><?= htmlspecialchars(form_old('content')) ?></textarea>
+                            <textarea id="message_content" name="content" class="form-textarea" placeholder="Type your message here..." maxlength="2000" required><?= htmlspecialchars(form_old('content')) ?></textarea>
                         </div>
                         <button type="submit" class="btn-send">
                             <i class="lni lni-telegram-original"></i> Send message

@@ -84,12 +84,12 @@ $id = htmlspecialchars((string)$row[0]);
 
                 <div class="form-group">
                     <label for="user-password" class="form-label">Password</label>
-                    <input type="password" id="user-password" name="pwd" class="form-control" minlength="6" placeholder="Leave blank to maintain current credentials">
+                    <input type="password" id="user-password" name="pwd" class="form-control" minlength="6" placeholder="Leave blank to keep the current password">
                     <small class="text-muted">Enter a new password only if you wish to change it.</small>
                 </div>
 
                 <div class="form-group">
-                    <label for="user-role" class="form-label">Division Role</label>
+                    <label for="user-role" class="form-label">Role</label>
                     <input type="text" id="user-role" class="form-control" value="<?= $role === 'admin' ? 'Admin' : 'Member' ?>" disabled>
                 </div>
 

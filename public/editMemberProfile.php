@@ -74,13 +74,13 @@ $id = htmlspecialchars((string)$row[0]);
                 </div>
 
                 <div class="form-group">
-                    <label for="user-password" class="form-label">Password Override</label>
-                    <input type="password" id="user-password" name="pwd" class="form-control" minlength="6" placeholder="Leave blank to maintain current credentials">
+                    <label for="user-password" class="form-label">New password</label>
+                    <input type="password" id="user-password" name="pwd" class="form-control" minlength="6" placeholder="Leave blank to keep the current password">
                     <small class="text-muted">Enter a new password only if you want to change it.</small>
                 </div>
 
                 <div class="form-group">
-                    <label for="user-role" class="form-label">Division &amp; Permissions Role</label>
+                    <label for="user-role" class="form-label">Role</label>
                     <div class="select-style-1">
                         <select name="role" id="user-role" class="form-control" required>
                             <option value="member" <?= $role === 'member' ? 'selected' : '' ?>>Member</option>
