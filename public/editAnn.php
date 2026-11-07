@@ -29,7 +29,7 @@ $authorId = $an[3] ?? 0;
         <div class="ann-form-container">
             <div class="ann-form-card">
                 <div class="form-header">
-                    <span class="kicker">Club Dispatches</span>
+                    <span class="kicker">Announcements</span>
                     <h2>Edit Announcement #ANN-<?= htmlspecialchars((string)$an[0]) ?></h2>
                 </div>
 
@@ -44,7 +44,7 @@ $authorId = $an[3] ?? 0;
                     </div>
 
                     <div class="form-group">
-                        <label for="ann-content" class="form-label">Dispatch Brief / Content</label>
+                        <label for="ann-content" class="form-label">Content</label>
                         <textarea id="ann-content" name="desc" class="form-control" rows="5" maxlength="5000" required><?= htmlspecialchars(form_old('desc', $an[2] ?? '')) ?></textarea>
                     </div>
 

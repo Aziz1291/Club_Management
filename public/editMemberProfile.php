@@ -9,14 +9,14 @@ $us  = new Admin();
 $row = $us->getUser($targetId);
 
 if (!$row) {
-    echo "<div class='container py-5'><div class='club-alert club-alert-danger'>Athlete record not found. <a href='members.php'>Return to roster</a>.</div></div>";
+    echo "<div class='container py-5'><div class='club-alert club-alert-danger'>Member not found. <a href='members.php'>Back to members</a>.</div></div>";
     include("footer.php");
     exit;
 }
 
 $currentPic = !empty($row[5]) ? htmlspecialchars($row[5]) : '../assets/images/profilee.jpg';
 $role = htmlspecialchars($row[4] ?? 'member');
-$name = htmlspecialchars($row[1] ?? 'Athlete');
+$name = htmlspecialchars($row[1] ?? 'Member');
 $email = htmlspecialchars($row[2] ?? '');
 $id = htmlspecialchars((string)$row[0]);
 ?>
@@ -27,10 +27,10 @@ $id = htmlspecialchars((string)$row[0]);
     <div class="container-fluid">
         <div class="profile-card">
             <div class="profile-header">
-                <span class="kicker">Privileged Administrative Roster Mutation</span>
+                <span class="kicker">Edit member</span>
                 <div class="profile-image-container mt-3">
                     <img src="<?= $currentPic ?>" alt="Profile photo" class="profile-image" id="profile-image" onerror="this.src='../assets/images/profilee.jpg'">
-                    <label class="profile-image-overlay" for="profile-image-input" title="Override athlete photo">
+                    <label class="profile-image-overlay" for="profile-image-input" title="Change photo">
                         <i class="lni lni-camera"></i>
                         <span>Replace Photo</span>
                     </label>
@@ -38,7 +38,7 @@ $id = htmlspecialchars((string)$row[0]);
                 <h1 class="profile-name"><?= $name ?></h1>
                 <p class="profile-role">
                     <span class="pill <?= $role === 'admin' ? 'pill-admin' : 'pill-member' ?>">
-                        <?= $role === 'admin' ? 'Athletic Director' : 'Varsity Athlete' ?>
+                        <?= $role === 'admin' ? 'Admin' : 'Member' ?>
                     </span>
                 </p>
             </div>
@@ -69,28 +69,28 @@ $id = htmlspecialchars((string)$row[0]);
                 </div>
 
                 <div class="form-group">
-                    <label for="user-email" class="form-label">Collegiate Email Address</label>
+                    <label for="user-email" class="form-label">Email address</label>
                     <input type="email" id="user-email" name="email" class="form-control" value="<?= htmlspecialchars(form_old('email', html_entity_decode($email))) ?>" maxlength="100" required>
                 </div>
 
                 <div class="form-group">
                     <label for="user-password" class="form-label">Password Override</label>
                     <input type="password" id="user-password" name="pwd" class="form-control" minlength="6" placeholder="Leave blank to maintain current credentials">
-                    <small class="text-muted">Enter a new password only if overriding this athlete's credentials.</small>
+                    <small class="text-muted">Enter a new password only if you want to change it.</small>
                 </div>
 
                 <div class="form-group">
                     <label for="user-role" class="form-label">Division &amp; Permissions Role</label>
                     <div class="select-style-1">
                         <select name="role" id="user-role" class="form-control" required>
-                            <option value="member" <?= $role === 'member' ? 'selected' : '' ?>>Varsity Member / Athlete</option>
-                            <option value="admin"  <?= $role === 'admin'  ? 'selected' : '' ?>>Athletic Director (Administrator)</option>
+                            <option value="member" <?= $role === 'member' ? 'selected' : '' ?>>Member</option>
+                            <option value="admin"  <?= $role === 'admin'  ? 'selected' : '' ?>>Admin</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-actions">
-                    <a href="members.php" class="btn-cancel">Return to Roster</a>
+                    <a href="members.php" class="btn-cancel">Back to members</a>
                     <button type="submit" class="btn-save">
                         <i class="lni lni-checkmark me-1"></i> Save Changes
                     </button>

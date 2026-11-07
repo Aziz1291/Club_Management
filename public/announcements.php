@@ -15,7 +15,7 @@ $as = $a->displayAnn();
         <div class="announcements-page">
             <div class="page-header">
                 <div>
-                    <span class="kicker">Club Dispatches</span>
+                    <span class="kicker">Announcements</span>
                     <h1 class="page-title">Official Announcements</h1>
                     <p class="page-subtitle">Official directives, schedule updates, and club announcements from administration.</p>
                 </div>
@@ -31,7 +31,7 @@ $as = $a->displayAnn();
                     <div class="no-announcements">
                         <i class="lni lni-bullhorn"></i>
                         <h3>No Announcements Yet</h3>
-                        <p>Be the first to publish a collegiate announcement for the club.</p>
+                        <p>Be the first to publish an announcement for the club.</p>
                     </div>
                 <?php else: ?>
                     <?php foreach ($as as $an): ?>
@@ -71,7 +71,7 @@ $as = $a->displayAnn();
                                             <i class="lni lni-pencil"></i> Edit
                                         </button>
                                     </form>
-                                    <form action="../actions/deleteAnn.php" method="POST" class="d-inline" onsubmit="return confirm('Delete this bulletin?');">
+                                    <form action="../actions/deleteAnn.php" method="POST" class="d-inline" onsubmit="return confirm('Delete this announcement?');">
 <?= csrf_field() ?>
                                         <input type="hidden" value="<?= $id ?>" name="id">
                                         <button type="submit" class="btn-delete">

@@ -25,7 +25,7 @@ $admins = $ad->listAdmin();
     <div class="container-fluid">
         <div class="event-form-container">
             <div class="form-card">
-                <span class="kicker">Tournament Director</span>
+                <span class="kicker">Admin</span>
                 <h2 class="form-title">Edit Scheduled Event</h2>
                 
                 <?php form_error_box(); ?>

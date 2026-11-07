@@ -16,7 +16,7 @@ $currentUserId = $_SESSION['id'] ?? 0;
         <div class="ann-form-container">
             <div class="ann-form-card">
                 <div class="form-header">
-                    <span class="kicker">Club Dispatches</span>
+                    <span class="kicker">Announcements</span>
                     <h2>Post Official Announcement</h2>
                 </div>
 
@@ -29,7 +29,7 @@ $currentUserId = $_SESSION['id'] ?? 0;
                     </div>
 
                     <div class="form-group">
-                        <label for="ann-content" class="form-label">Dispatch Brief / Content</label>
+                        <label for="ann-content" class="form-label">Content</label>
                         <textarea id="ann-content" name="desc" class="form-control" rows="5" placeholder="Write the complete announcement text..." maxlength="5000" required><?= htmlspecialchars(form_old('desc')) ?></textarea>
                     </div>
 

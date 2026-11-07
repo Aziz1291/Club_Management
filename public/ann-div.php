@@ -12,7 +12,7 @@
         <div class='no-announcements'>
             <i class='lni lni-bullhorn'></i>
             <h3>No Active Announcements</h3>
-            <p>Official dispatches and tournament bulletins will appear here.</p>
+            <p>Announcements will appear here.</p>
         </div>";
     } else {
         foreach ($as as $an) {

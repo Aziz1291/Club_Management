@@ -4,7 +4,7 @@
             <div class="col-md-6 order-last order-md-first">
                 <div class="copyright text-center text-md-start">
                     <p>
-                        <strong>ClubManager</strong> &copy; <?= date('Y') ?> &bull; Collegiate Athletic Federation &bull; Division League
+                        <strong>ClubManager</strong> &copy; <?= date('Y') ?> &bull; Academic club management demo
                     </p>
                 </div>
             </div>

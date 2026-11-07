@@ -7,7 +7,7 @@ $currentUserId = (int)($_SESSION['id'] ?? 0);
 $row = $us->getUser($currentUserId);
 $currentPic = get_avatar_url($row[5] ?? '');
 $role = htmlspecialchars($row[4] ?? 'member');
-$name = htmlspecialchars($row[1] ?? 'Athlete');
+$name = htmlspecialchars($row[1] ?? 'Member');
 $email = htmlspecialchars($row[2] ?? '');
 $id = htmlspecialchars((string)$row[0]);
 ?>
@@ -20,7 +20,7 @@ $id = htmlspecialchars((string)$row[0]);
             <?php $notice = take_flash_code(); ?>
             <?php if ($notice === 'profile_saved'): ?>
                 <div class="flash-success">
-                    <i class="lni lni-checkmark-circle"></i> Profile dossier updated successfully!
+                    <i class="lni lni-checkmark-circle"></i> Profile updated.
                 </div>
             <?php endif; ?>
             <?php if (strpos($notice, 'img_') === 0): ?>
@@ -33,7 +33,7 @@ $id = htmlspecialchars((string)$row[0]);
             <div class="profile-header">
                 <div class="profile-image-container">
                     <img src="<?= $currentPic ?>" alt="Profile photo" class="profile-image" id="profile-image" onerror="this.src='../assets/images/profilee.jpg'">
-                    <label class="profile-image-overlay" for="profile-image-input" id="profile-image-trigger" title="Change athlete photo">
+                    <label class="profile-image-overlay" for="profile-image-input" id="profile-image-trigger" title="Change photo">
                         <i class="lni lni-camera"></i>
                         <span>Change Photo</span>
                     </label>
@@ -46,7 +46,7 @@ $id = htmlspecialchars((string)$row[0]);
                 <h1 class="profile-name mt-2"><?= $name ?></h1>
                 <p class="profile-role">
                     <span class="pill <?= $role === 'admin' ? 'pill-admin' : 'pill-member' ?>">
-                        <?= $role === 'admin' ? 'Athletic Director' : 'Varsity Athlete' ?>
+                        <?= $role === 'admin' ? 'Admin' : 'Member' ?>
                     </span>
                 </p>
             </div>
@@ -65,7 +65,7 @@ $id = htmlspecialchars((string)$row[0]);
                 <div class="row g-3 mb-3">
                     <div class="col-md-4">
                         <div class="form-group mb-0">
-                            <label for="user-id" class="form-label">Member Roster ID</label>
+                            <label for="user-id" class="form-label">Member ID</label>
                             <input type="text" id="user-id" class="form-control tabular-num" value="#ATH-<?= str_pad((string)$id, 2, '0', STR_PAD_LEFT) ?>" disabled>
                         </div>
                     </div>
@@ -78,7 +78,7 @@ $id = htmlspecialchars((string)$row[0]);
                 </div>
 
                 <div class="form-group">
-                    <label for="user-email" class="form-label">Collegiate Email Address</label>
+                    <label for="user-email" class="form-label">Email address</label>
                     <input type="email" id="user-email" name="email" class="form-control" value="<?= htmlspecialchars(form_old('email', html_entity_decode($email))) ?>" maxlength="100" required>
                 </div>
 
@@ -90,13 +90,13 @@ $id = htmlspecialchars((string)$row[0]);
 
                 <div class="form-group">
                     <label for="user-role" class="form-label">Division Role</label>
-                    <input type="text" id="user-role" class="form-control" value="<?= $role === 'admin' ? 'Athletic Administrator' : 'Varsity Member' ?>" disabled>
+                    <input type="text" id="user-role" class="form-control" value="<?= $role === 'admin' ? 'Admin' : 'Member' ?>" disabled>
                 </div>
 
                 <div class="form-actions">
                     <a href="index.php" class="btn-cancel">Return to Dashboard</a>
                     <button type="submit" class="btn-save" id="btn-save-profile">
-                        <i class="lni lni-checkmark me-1"></i> Save Dossier
+                        <i class="lni lni-checkmark me-1"></i> Save changes
                     </button>
                 </div>
             </form>

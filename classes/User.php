@@ -22,6 +22,16 @@ class User{
         $res=$this->pdo->query($req);
         return $res->fetchColumn();
     }
+    function nbUpcomingEvent(){
+        return $this->pdo->query("SELECT count(*) from events WHERE date >= CURDATE()")->fetchColumn();
+    }
+    /** Registrations per event, for the dashboard chart. */
+    function registrationsPerEvent(){
+        return $this->pdo->query("SELECT e.title, COUNT(r.id) AS total FROM events e LEFT JOIN registrations r ON r.event_id = e.id GROUP BY e.id, e.title ORDER BY e.date ASC")->fetchAll(PDO::FETCH_ASSOC);
+    }
+    function countByRole(){
+        return $this->pdo->query("SELECT role, COUNT(*) AS total FROM users GROUP BY role")->fetchAll(PDO::FETCH_KEY_PAIR);
+    }
     function nbMsg($id){
         $req=$this->pdo->prepare("SELECT count(*) from messages where status='unread' and receiver_id=?");
         $req->execute([$id]);

@@ -20,13 +20,13 @@ if ($q !== '') {
         <div class="title-wrapper">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <span class="kicker">Athletic Governance</span>
-                    <h2 class="mb-1">Collegiate Member Roster</h2>
-                    <p class="text-muted mb-0"><?php if ($q !== ''): ?>Showing <?= count($res) ?> result(s) for &ldquo;<?= htmlspecialchars($q) ?>&rdquo; &middot; <a href="members.php">Clear</a><?php else: ?>Active athletes, verified members, and athletic department directors.<?php endif; ?></p>
+                    <span class="kicker">Admin</span>
+                    <h2 class="mb-1">Members</h2>
+                    <p class="text-muted mb-0"><?php if ($q !== ''): ?>Showing <?= count($res) ?> result(s) for &ldquo;<?= htmlspecialchars($q) ?>&rdquo; &middot; <a href="members.php">Clear</a><?php else: ?>All club members and admins.<?php endif; ?></p>
                 </div>
                 <div class="col-md-6 text-md-end mt-3 mt-md-0">
                     <a href="addMember.php" class="btn-add-member">
-                        <i class="lni lni-plus"></i> Enroll New Athlete
+                        <i class="lni lni-plus"></i> Add member
                     </a>
                 </div>
             </div>
@@ -39,8 +39,8 @@ if ($q !== '') {
                         <thead>
                             <tr>
                                 <th scope="col">ID</th>
-                                <th scope="col">Athlete / Profile</th>
-                                <th scope="col">Collegiate Email</th>
+                                <th scope="col">Member</th>
+                                <th scope="col">Email</th>
                                 <th scope="col">Division Role</th>
                                 <th scope="col">Account Status</th>
                                 <th scope="col" style="text-align: right;">Administrative Actions</th>
@@ -49,7 +49,7 @@ if ($q !== '') {
                         <tbody>
                             <?php if (empty($res)): ?>
                                 <tr>
-                                    <td colspan="6" class="text-center py-4 text-muted empty-row">No members enrolled in the club roster.</td>
+                                    <td colspan="6" class="text-center py-4 text-muted empty-row">No members found.</td>
                                 </tr>
                             <?php else: ?>
                                 <?php foreach ($res as $row): ?>
@@ -60,7 +60,7 @@ if ($q !== '') {
                                     $role = htmlspecialchars($row[4] ?? 'member');
                                     $avatar = !empty($row[5]) ? htmlspecialchars($row[5]) : '../assets/images/profilee.jpg';
                                     $rolePillClass = $role === 'admin' ? 'pill-admin' : 'pill-member';
-                                    $roleLabel = $role === 'admin' ? 'Athletic Director' : 'Varsity Athlete';
+                                    $roleLabel = $role === 'admin' ? 'Admin' : 'Member';
                                     ?>
                                     <tr>
                                         <td data-label="ID">
@@ -93,7 +93,7 @@ if ($q !== '') {
                                                         <i class="lni lni-pencil"></i> Edit
                                                     </button>
                                                 </form>
-                                                <form action="../actions/Del.php" method="POST" class="d-inline" onsubmit="return confirm('Remove athlete from roster?');">
+                                                <form action="../actions/Del.php" method="POST" class="d-inline" onsubmit="return confirm('Remove this member?');">
 <?= csrf_field() ?>
                                                     <input type="hidden" name="curid" value="<?= $id ?>">
                                                     <button type="submit" class="btn-delete" aria-label="Delete <?= $name ?>">

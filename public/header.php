@@ -23,7 +23,7 @@ require_once __DIR__ . '/../auth.php';
     <meta name="twitter:title" content="ClubManager | Academic project">
     <meta name="twitter:description" content="An academic club management demo for members, events and messages.">
     <meta name="twitter:image" content="https://www.azizkouki.com/projects/club/assets/social-preview.png">
-    <title>ClubManager – Collegiate Athletics</title>
+    <title>ClubManager</title>
     <link rel="icon" type="image/png" href="../assets/favicon.png">
 
     <!-- Fonts: Outfit (Brand & Headings) + JetBrains Mono (Data & Tabs) -->
@@ -71,79 +71,43 @@ require_once __DIR__ . '/../auth.php';
             </div>
             <div class="col-lg-7 col-md-7 col-6">
                 <div class="header-right">
-                    <!-- Notification Bell -->
-                    <div class="notification-box d-none d-md-flex">
-                        <button class="dropdown-toggle" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Announcements & Alerts">
-                            <i class="lni lni-alarm"></i>
-                            <span>3</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
-                            <li>
-                                <a href="announcements.php" class="dropdown-item">
-                                    <div class="image">
-                                        <img src="../assets/images/lead/lead-6.png" alt="" />
-                                    </div>
-                                    <div class="content">
-                                        <h6>New Announcement <span class="text-regular">from Admin</span></h6>
-                                        <p>Annual Club Meeting scheduled for next week.</p>
-                                        <span class="tabular-num">10 mins ago</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="announcements.php" class="dropdown-item">
-                                    <div class="image">
-                                        <img src="../assets/images/lead/lead-1.png" alt="" />
-                                    </div>
-                                    <div class="content">
-                                        <h6>Event Reminder <span class="text-regular">Track Meet</span></h6>
-                                        <p>Track Invitational roster check tomorrow at 9 AM.</p>
-                                        <span class="tabular-num">25 mins ago</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="dropdown-footer">
-                                <a href="announcements.php" class="text-center d-block py-2">
-                                    <i class="lni lni-bullhorn me-1"></i> View All Announcements
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Communications / Direct Mail -->
+                    <!-- Messages: real unread messages -->
+                    <?php
+                    $unreadCount = 0;
+                    $unreadPreview = [];
+                    try {
+                        require_once __DIR__ . '/../classes/Message.php';
+                        $hdrMsg = new Message();
+                        $unreadCount = $hdrMsg->countUnread((int) ($_SESSION['id'] ?? 0));
+                        $unreadPreview = $hdrMsg->getUnreadPreview((int) ($_SESSION['id'] ?? 0), 3);
+                    } catch (Throwable $e) {
+                        error_log('header unread messages: ' . $e->getMessage());
+                    }
+                    ?>
                     <div class="header-message-box d-none d-md-flex">
-                        <button class="dropdown-toggle" type="button" id="messageDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Direct Messages">
+                        <button class="dropdown-toggle" type="button" id="messageDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Messages (<?= $unreadCount ?> unread)">
                             <i class="lni lni-envelope"></i>
-                            <span>2</span>
+                            <?php if ($unreadCount > 0): ?><span><?= $unreadCount ?></span><?php endif; ?>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="messageDropdown">
-                            <li>
-                                <a href="messages.php" class="dropdown-item">
-                                    <div class="image">
-                                        <img src="../assets/images/lead/lead-5.png" alt="" />
-                                    </div>
-                                    <div class="content">
-                                        <h6>Michael Brown <span class="pill pill-member ms-1">Athlete</span></h6>
-                                        <p>Can you confirm my 400m heat assignment?</p>
-                                        <span class="tabular-num">10 mins ago</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="messages.php" class="dropdown-item">
-                                    <div class="image">
-                                        <img src="../assets/images/lead/lead-3.png" alt="" />
-                                    </div>
-                                    <div class="content">
-                                        <h6>Emily Davis <span class="pill pill-admin ms-1">Director</span></h6>
-                                        <p>Updated rules sheet published for Spring season.</p>
-                                        <span class="tabular-num">45 mins ago</span>
-                                    </div>
-                                </a>
-                            </li>
+                            <?php if (empty($unreadPreview)): ?>
+                                <li><span class="dropdown-item-text text-muted d-block px-3 py-2">No unread messages.</span></li>
+                            <?php else: ?>
+                                <?php foreach ($unreadPreview as $pm): ?>
+                                    <li>
+                                        <a href="messages.php" class="dropdown-item">
+                                            <div class="content">
+                                                <h6><?= htmlspecialchars($pm['sender'] ?? 'User') ?></h6>
+                                                <p><?= htmlspecialchars(mb_strimwidth((string) $pm['content'], 0, 60, '...')) ?></p>
+                                                <span class="tabular-num"><?= htmlspecialchars(date('M j, H:i', strtotime($pm['created_at']))) ?></span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                             <li class="dropdown-footer">
                                 <a href="messages.php" class="text-center d-block py-2">
-                                    <i class="lni lni-inbox me-1"></i> Open Communications Desk
+                                    <i class="lni lni-inbox me-1"></i> Open messages
                                 </a>
                             </li>
                         </ul>
@@ -181,7 +145,7 @@ require_once __DIR__ . '/../auth.php';
                             </li>
                             <li>
                                 <a href="profile.php" class="dropdown-item">
-                                    <i class="lni lni-user"></i> My Athletic Dossier
+                                    <i class="lni lni-user"></i> My Profile
                                 </a>
                             </li>
                             <li>
@@ -191,7 +155,7 @@ require_once __DIR__ . '/../auth.php';
                             </li>
                             <li>
                                 <a href="messages.php" class="dropdown-item">
-                                    <i class="lni lni-envelope"></i> Communications
+                                    <i class="lni lni-envelope"></i> Messages
                                 </a>
                             </li>
                             <li class="divider"></li>

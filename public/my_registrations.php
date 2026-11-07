@@ -18,9 +18,9 @@ $totalPasses = count($regList);
         <div class="registrations-page">
             <div class="registrations-header-bar">
                 <div>
-                    <span class="kicker">Athlete Commitments</span>
-                    <h1 class="page-title">My Tournament Registrations</h1>
-                    <p class="page-subtitle">Confirmed event entries, scheduled meets, and active tournament passes.</p>
+                    <span class="kicker">Events</span>
+                    <h1 class="page-title">My registrations</h1>
+                    <p class="page-subtitle">The events you are registered for.</p>
                 </div>
                 <div>
                     <a href="events.php" class="btn-club btn-club-secondary">
@@ -34,7 +34,7 @@ $totalPasses = count($regList);
                     <i class="lni lni-checkmark-circle"></i>
                     <div>
                         <strong>Registration Cancelled</strong>
-                        <p class="mb-0 text-muted">Your tournament pass has been withdrawn. You can re-register anytime from the events calendar.</p>
+                        <p class="mb-0 text-muted">Your registration has been cancelled. You can register again from the events page.</p>
                     </div>
                 </div>
             <?php endif; ?>
@@ -43,7 +43,7 @@ $totalPasses = count($regList);
                 <?php if ($totalPasses === 0): ?>
                     <div class="no-registrations">
                         <i class="lni lni-ticket-alt"></i>
-                        <h3>No Active Tournament Passes</h3>
+                        <h3>No registrations yet</h3>
                         <p>You haven't registered for any upcoming club meets or tournaments yet.</p>
                         <a href="events.php" class="browse-events-btn">
                             <i class="lni lni-calendar"></i> Discover &amp; Join Events
@@ -56,7 +56,7 @@ $totalPasses = count($regList);
                         $regId = (int)$ev['registration_id'];
                         $formattedDate = date('M j, Y', strtotime($ev['date']));
                         $ad = $a->getUser($ev['admin_Id']);
-                        $adminName = htmlspecialchars($ad[1] ?? 'Athletics Director');
+                        $adminName = htmlspecialchars($ad[1] ?? 'Admin');
                         $adminRole = htmlspecialchars($ad[4] ?? 'Admin');
                         $adminPic = get_avatar_url($ad[5] ?? '');
                         $title = htmlspecialchars($ev['title'] ?? '');
@@ -67,7 +67,7 @@ $totalPasses = count($regList);
                             <div class="registration-header">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
                                     <div class="d-flex align-items-center gap-2">
-                                        <span class="pass-id-tag">#PASS-<?= str_pad((string)$regId, 3, '0', STR_PAD_LEFT) ?></span>
+                                        <span class="pass-id-tag">#REG-<?= str_pad((string)$regId, 3, '0', STR_PAD_LEFT) ?></span>
                                         <span class="event-id-chip"><i class="lni lni-tag"></i> #EVT-<?= str_pad((string)$eventId, 2, '0', STR_PAD_LEFT) ?></span>
                                     </div>
                                     <span class="pill tone-olive"><i class="lni lni-checkmark-circle"></i> Confirmed Entry</span>

@@ -14,7 +14,7 @@ $admins = $ad->listAdmin();
     <div class="container-fluid">
         <div class="event-form-container">
             <div class="form-card">
-                <span class="kicker">Tournament Director</span>
+                <span class="kicker">Admin</span>
                 <h2 class="form-title">Schedule New Event</h2>
                 
                 <?php form_error_box(); ?>
@@ -48,7 +48,7 @@ $admins = $ad->listAdmin();
                     <div class="form-group">
                         <label for="eventAdmin" class="form-label">Presiding Director / Coach</label>
                         <select id="eventAdmin" name="admin_id" class="form-control" required>
-                            <option value="">Select an athletic administrator...</option>
+                            <option value="">Select an admin...</option>
                             <?php foreach ($admins as $admin): ?>
                                 <option value="<?= htmlspecialchars((string)$admin[0]) ?>"<?= form_old('admin_id') === (string)$admin[0] ? ' selected' : '' ?>>
                                     <?= htmlspecialchars($admin[1]) ?>

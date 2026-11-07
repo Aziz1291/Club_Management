@@ -17,9 +17,9 @@ $ad = new User();
         <div class="events-container">
             <div class="events-header">
                 <div>
-                    <span class="kicker">Athletic Governance</span>
-                    <h2>Events &amp; Tournament Director</h2>
-                    <p>Manage and orchestrate all collegiate events, dates, locations, and assigned directors.</p>
+                    <span class="kicker">Admin</span>
+                    <h2>Manage events</h2>
+                    <p>Add, edit and delete the events of the club.</p>
                 </div>
                 <div>
                     <a href="addEvent.php" class="btn-add-event">

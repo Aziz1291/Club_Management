@@ -12,6 +12,17 @@ class Message{
         $res->execute([$id]);
         return $res;
     }
+    /** Latest unread messages for the header dropdown, with the sender's name. */
+    function getUnreadPreview($id, $limit = 3){
+        $res = $this->pdo->prepare("SELECT m.id, m.content, m.created_at, u.username AS sender FROM messages m LEFT JOIN users u ON u.id = m.sender_id WHERE m.receiver_id = ? AND m.status = 'unread' ORDER BY m.created_at DESC LIMIT " . (int) $limit);
+        $res->execute([$id]);
+        return $res->fetchAll(PDO::FETCH_ASSOC);
+    }
+    function countUnread($id){
+        $res = $this->pdo->prepare("SELECT COUNT(*) FROM messages WHERE receiver_id = ? AND status = 'unread'");
+        $res->execute([$id]);
+        return (int) $res->fetchColumn();
+    }
     function getSentByUser($id){
         $res = $this->pdo->prepare("SELECT * from messages where sender_id = ? ORDER BY created_at DESC");
         $res->execute([$id]);

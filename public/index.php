@@ -5,7 +5,9 @@ require_once('../classes/User.php');
 $us = new User();
 $currentUserId = $_SESSION['id'] ?? 0;
 $totalMembers = $us->nbUser();
-$upcomingEvents = $us->nbEvent();
+$upcomingEvents = $us->nbUpcomingEvent();
+$regsPerEvent = $us->registrationsPerEvent();
+$roleCounts = $us->countByRole();
 $unreadMessages = $us->nbMsg($currentUserId);
 $eventRegistrations = $us->nbReg($currentUserId);
 ?>
@@ -18,16 +20,16 @@ $eventRegistrations = $us->nbReg($currentUserId);
         <div class="title-wrapper">
             <div class="row align-items-center">
                 <div class="col-md-7">
-                    <span class="kicker">Season Performance &bull; Division League</span>
-                    <h2 class="mb-1">Athletic Club Executive Dashboard</h2>
-                    <p class="text-muted mb-0">Live roster vitals, tournament registrations, and official dispatches.</p>
+                    <span class="kicker">Club</span>
+                    <h2 class="mb-1">Dashboard</h2>
+                    <p class="text-muted mb-0">Members, upcoming events, your messages and your registrations.</p>
                 </div>
                 <div class="col-md-5">
                     <div class="breadcrumb-wrapper">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.php">ClubManager</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Executive Overview</li>
+                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
                             </ol>
                         </nav>
                     </div>
@@ -35,7 +37,7 @@ $eventRegistrations = $us->nbReg($currentUserId);
             </div>
         </div>
 
-        <!-- Athletic Vitals Ribbon -->
+        <!-- Summary cards -->
         <div class="row g-4 mb-4">
             <!-- Total Members -->
             <div class="col-xl-3 col-lg-6 col-sm-6">
@@ -44,10 +46,10 @@ $eventRegistrations = $us->nbReg($currentUserId);
                         <div class="icon">
                             <i class="lni lni-users"></i>
                         </div>
-                        <span class="pill tone-sea">Roster Vitals</span>
+                        <span class="pill tone-sea">Members</span>
                     </div>
                     <div class="content">
-                        <h6>Total Active Members</h6>
+                        <h6>Members</h6>
                         <h3 class="tabular-num"><?= htmlspecialchars((string)$totalMembers) ?></h3>
                     </div>
                 </div>
@@ -60,10 +62,10 @@ $eventRegistrations = $us->nbReg($currentUserId);
                         <div class="icon">
                             <i class="lni lni-calendar"></i>
                         </div>
-                        <span class="pill tone-olive">Schedule</span>
+                        <span class="pill tone-olive">Events</span>
                     </div>
                     <div class="content">
-                        <h6>Upcoming Meets &amp; Events</h6>
+                        <h6>Upcoming events</h6>
                         <h3 class="tabular-num"><?= htmlspecialchars((string)$upcomingEvents) ?></h3>
                     </div>
                 </div>
@@ -76,10 +78,10 @@ $eventRegistrations = $us->nbReg($currentUserId);
                         <div class="icon">
                             <i class="lni lni-envelope"></i>
                         </div>
-                        <span class="pill tone-clay">Inbox</span>
+                        <span class="pill tone-clay">Messages</span>
                     </div>
                     <div class="content">
-                        <h6>Unread Dispatches</h6>
+                        <h6>Unread messages</h6>
                         <h3 class="tabular-num"><?= htmlspecialchars((string)$unreadMessages) ?></h3>
                     </div>
                 </div>
@@ -92,64 +94,58 @@ $eventRegistrations = $us->nbReg($currentUserId);
                         <div class="icon">
                             <i class="lni lni-checkmark-circle"></i>
                         </div>
-                        <span class="pill pill-admin">Active Passes</span>
+                        <span class="pill pill-admin">Registrations</span>
                     </div>
                     <div class="content">
-                        <h6>My Tournament Registrations</h6>
+                        <h6>My registrations</h6>
                         <h3 class="tabular-num"><?= htmlspecialchars((string)$eventRegistrations) ?></h3>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Charts Grid -->
+        <!-- Charts Grid (real counts from the database) -->
         <div class="row g-4 mb-4">
             <div class="col-lg-8">
                 <div class="card-style h-100 mb-0">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                        <div>
-                            <span class="kicker-subtle">Participation Velocity</span>
-                            <h3 class="mb-0">Registration &amp; Roster Growth</h3>
-                        </div>
-                        <div class="select-style-1">
-                            <select aria-label="Chart Period Filter">
-                                <option value="monthly">2026 Season (Monthly)</option>
-                                <option value="quarterly">Quarterly Breakdown</option>
-                            </select>
-                        </div>
+                    <div class="mb-3 pb-2 border-bottom">
+                        <span class="kicker-subtle">Events</span>
+                        <h3 class="mb-0">Registrations per event</h3>
                     </div>
-                    <div class="chart" style="height: 340px;">
-                        <canvas id="activityChart"></canvas>
-                    </div>
+                    <?php if (empty($regsPerEvent)): ?>
+                        <p class="text-muted mb-0">No events yet.</p>
+                    <?php else: ?>
+                        <div class="chart" style="height: 300px;">
+                            <canvas id="activityChart"></canvas>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
 
             <div class="col-lg-4">
                 <div class="card-style h-100 mb-0">
-                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                        <div>
-                            <span class="kicker-subtle">Demographics</span>
-                            <h3 class="mb-0">Roster Status</h3>
-                        </div>
+                    <div class="mb-3 pb-2 border-bottom">
+                        <span class="kicker-subtle">Members</span>
+                        <h3 class="mb-0">Members by role</h3>
                     </div>
-                    <div class="chart d-flex align-items-center justify-content-center" style="height: 340px;">
+                    <div class="chart d-flex align-items-center justify-content-center" style="height: 300px;">
                         <canvas id="memberChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Official Bulletins Stream -->
+        <!-- Latest announcements -->
         <div class="row g-4">
             <div class="col-12">
                 <div class="card-style mb-0">
                     <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 pb-2 border-bottom">
                         <div>
-                            <span class="kicker">Official Announcements</span>
-                            <h3 class="mb-0">Club Administration Bulletins</h3>
+                            <span class="kicker">Announcements</span>
+                            <h3 class="mb-0">Latest announcements</h3>
                         </div>
                         <a href="announcements.php" class="btn-club btn-club-secondary btn-club-sm">
-                            <i class="lni lni-bullhorn"></i> View All Bulletins &rarr;
+                            <i class="lni lni-bullhorn"></i> All announcements &rarr;
                         </a>
                     </div>
                     <?php include('ann-div.php'); ?>
@@ -165,114 +161,42 @@ $eventRegistrations = $us->nbReg($currentUserId);
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    // 1. Club Activity & Growth (Line Chart)
-    const ctx1 = document.getElementById("activityChart").getContext("2d");
-    new Chart(ctx1, {
-        type: "line",
-        data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            datasets: [
-                {
-                    label: "Event Registrations",
-                    backgroundColor: "transparent",
-                    borderColor: "#1d4ed8", // Royal Ultramarine
-                    pointBackgroundColor: "#1d4ed8",
-                    pointHoverBackgroundColor: "#1e3a8a",
-                    borderWidth: 3,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
-                    tension: 0.25,
-                    data: [28, 42, 35, 52, 48, 64, 72, 88, 120, 95, 90, 115]
-                },
-                {
-                    label: "New Athlete Recruits",
-                    backgroundColor: "transparent",
-                    borderColor: "#5d6b43", // Turf Olive
-                    pointBackgroundColor: "#5d6b43",
-                    pointHoverBackgroundColor: "#465133",
-                    borderWidth: 2,
-                    borderDash: [5, 5],
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
-                    tension: 0.25,
-                    data: [12, 16, 9, 14, 22, 19, 26, 31, 24, 29, 26, 36]
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        font: { family: "'Outfit', sans-serif", size: 12, weight: '600' },
-                        color: "#1c1917"
-                    }
-                },
-                tooltip: {
-                    backgroundColor: "#ffffff",
-                    titleColor: "#1c1917",
-                    bodyColor: "#57534e",
-                    borderColor: "#e2e2df",
-                    borderWidth: 1,
-                    padding: 12,
-                    boxPadding: 6,
-                    usePointStyle: true,
-                    titleFont: { family: "'Outfit', sans-serif", weight: '700' },
-                    bodyFont: { family: "'JetBrains Mono', monospace", size: 13 }
-                }
+    const regs = <?= json_encode($regsPerEvent, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+    const roles = <?= json_encode($roleCounts, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+    const font = { family: "'Outfit', sans-serif", size: 12 };
+
+    const bar = document.getElementById("activityChart");
+    if (bar) {
+        new Chart(bar.getContext("2d"), {
+            type: "bar",
+            data: {
+                labels: regs.map(r => r.title),
+                datasets: [{ label: "Registrations", data: regs.map(r => Number(r.total)), backgroundColor: "#1d4ed8", borderRadius: 4 }]
             },
-            scales: {
-                y: {
-                    grid: { color: "rgba(226, 226, 223, 0.6)" },
-                    ticks: {
-                        color: "#57534e",
-                        font: { family: "'JetBrains Mono', monospace", size: 11 }
-                    }
-                },
-                x: {
-                    grid: { display: false },
-                    ticks: {
-                        color: "#57534e",
-                        font: { family: "'Outfit', sans-serif", size: 12 }
-                    }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { precision: 0, font: font } },
+                    x: { grid: { display: false }, ticks: { font: font } }
                 }
             }
-        }
-    });
+        });
+    }
 
-    // 2. Member Demographics (Doughnut Chart)
-    const ctx2 = document.getElementById("memberChart").getContext("2d");
-    new Chart(ctx2, {
+    const names = { admin: "Admins", member: "Members" };
+    new Chart(document.getElementById("memberChart").getContext("2d"), {
         type: "doughnut",
         data: {
-            labels: ["Active Varsity", "In Review", "Alumni / Reserve"],
-            datasets: [{
-                data: [68, 18, 14],
-                backgroundColor: [
-                    "#1d4ed8", // Ultramarine
-                    "#d7dcbd", // Olive
-                    "#eccdb4"  // Clay
-                ],
-                borderColor: "#ffffff",
-                borderWidth: 2
-            }]
+            labels: Object.keys(roles).map(k => names[k] || k),
+            datasets: [{ data: Object.values(roles).map(Number), backgroundColor: ["#1d4ed8", "#5d6b43", "#b4552d"], borderColor: "#ffffff", borderWidth: 2 }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: "bottom",
-                    labels: {
-                        font: { family: "'Outfit', sans-serif", size: 12, weight: '500' },
-                        color: "#1c1917",
-                        padding: 16
-                    }
-                }
-            },
-            cutout: "68%"
+            plugins: { legend: { position: "bottom", labels: { font: font, padding: 16 } } },
+            cutout: "62%"
         }
     });
 });

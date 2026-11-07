@@ -21,26 +21,26 @@ $notice = take_flash_code();
     <div class="container-fluid">
         <div class="messages-page">
             <div class="messages-header-bar">
-                <span class="kicker">Communications Desk</span>
-                <h1 class="page-title">Direct Dispatches &amp; Messages</h1>
-                <p class="page-subtitle">Communicate with club directors, coaches, and team athletes.</p>
+                <span class="kicker">Club</span>
+                <h1 class="page-title">Messages</h1>
+                <p class="page-subtitle">Write to other members of the club.</p>
             </div>
 
             <?php if ($notice === 'sent'): ?>
                 <div class="alert-dispatch-sent" role="alert">
                     <i class="lni lni-checkmark-circle"></i>
                     <div>
-                        <strong>Dispatch Transmitted!</strong>
+                        <strong>Message sent!</strong>
                         <p class="mb-0 text-muted">Your message has been delivered to the recipient&rsquo;s inbox.</p>
                     </div>
                 </div>
             <?php endif; ?>
 
             <div class="messages-container">
-                <!-- Compose Dispatch Panel -->
+                <!-- New message Panel -->
                 <div class="send-message-section" id="compose">
                     <h3 class="section-title">
-                        <i class="lni lni-pencil-alt"></i> Compose Dispatch
+                        <i class="lni lni-pencil-alt"></i> New message
                     </h3>
                     <?php form_error_box(); ?>
                     <form class="message-form" action="../actions/send_message.php" method="POST">
@@ -48,7 +48,7 @@ $notice = take_flash_code();
                         <div class="form-group">
                             <label class="form-label" for="receiver_id">Select Recipient</label>
                             <select id="receiver_id" name="receiver_id" class="form-select" required>
-                                <option value="">Choose an athlete or director...</option>
+                                <option value="">Choose a member...</option>
                                 <?php foreach ($users as $user): ?>
                                     <?php if ($user[0] != $current_user_id): ?>
                                         <option value="<?= htmlspecialchars((string)$user[0]) ?>"<?= (int)$user[0] === $replyTo ? ' selected' : '' ?>>
@@ -59,11 +59,11 @@ $notice = take_flash_code();
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="message_content">Dispatch Content</label>
+                            <label class="form-label" for="message_content">Message</label>
                             <textarea id="message_content" name="content" class="form-textarea" placeholder="Type your message or inquiry here..." maxlength="2000" required><?= htmlspecialchars(form_old('content')) ?></textarea>
                         </div>
                         <button type="submit" class="btn-send">
-                            <i class="lni lni-telegram-original"></i> Send Dispatch
+                            <i class="lni lni-telegram-original"></i> Send message
                         </button>
                     </form>
                 </div>
@@ -71,7 +71,7 @@ $notice = take_flash_code();
                 <!-- Messages Stream Panel -->
                 <div class="messages-list-section">
                     <h3 class="section-title">
-                        <i class="lni lni-inbox"></i> Your Dispatches
+                        <i class="lni lni-inbox"></i> Your messages
                     </h3>
                     <nav class="message-tabs" aria-label="Message folders">
                         <a href="messages.php" class="<?= $box === 'inbox' ? 'active' : '' ?>" <?= $box === 'inbox' ? 'aria-current="page"' : '' ?>>Inbox (<?= count($inboxList) ?>)</a>
@@ -81,7 +81,7 @@ $notice = take_flash_code();
                         <?php if (empty($msgList)): ?>
                             <div class="club-card text-center py-5">
                                 <i class="lni lni-envelope" style="font-size: 2.2rem; color: var(--subtle);"></i>
-                                <h4 class="mt-3"><?= $box === 'sent' ? 'No Sent Dispatches' : 'No Dispatches in Inbox' ?></h4>
+                                <h4 class="mt-3"><?= $box === 'sent' ? 'No sent messages' : 'Inbox is empty' ?></h4>
                                 <p class="text-muted mb-0"><?= $box === 'sent' ? 'Messages you send will appear here.' : 'Messages sent to you from members and administrators will appear here.' ?></p>
                             </div>
                         <?php else: ?>
@@ -127,12 +127,12 @@ $notice = take_flash_code();
                                     </div>
                                     <div class="message-actions">
                                         <?php if ($box === 'inbox'): ?>
-                                            <a href="messages.php?to=<?= (int)$message['sender_id'] ?>#compose" class="btn-mark-read"><i class="lni lni-reply"></i> Reply</a>
+                                            <a href="messages.php?to=<?= (int)$message['sender_id'] ?>#compose" class="btn-edit"><i class="lni lni-reply"></i> Reply</a>
                                         <?php else: ?>
                                             <form method="post" action="../actions/delete_message.php" onsubmit="return confirm('Delete this message? It is removed for the recipient too.');">
                                                 <?= csrf_field() ?>
                                                 <input type="hidden" name="id" value="<?= $msgId ?>">
-                                                <button type="submit" class="btn-mark-read"><i class="lni lni-trash-can"></i> Delete</button>
+                                                <button type="submit" class="btn-delete"><i class="lni lni-trash-can"></i> Delete</button>
                                             </form>
                                         <?php endif; ?>
                                     </div>

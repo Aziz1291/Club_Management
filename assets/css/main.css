@@ -41,6 +41,8 @@ img {
   top: 0;
   left: 0;
   bottom: 0;
+  height: 100vh;
+  height: 100dvh;
   width: var(--sidebar-w);
   background: var(--surface);
   border-right: 1px solid var(--line);
@@ -83,6 +85,23 @@ img {
   max-width: 32px;
   max-height: 32px;
   object-fit: contain;
+}
+
+.navbar-logo .logo-name {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.sidebar-nav-wrapper.active .navbar-logo .logo-name {
+  font-size: 0;
+}
+
+.sidebar-nav-wrapper.active .navbar-logo .logo-name::first-letter {
+  font-size: 1.25rem;
 }
 
 .navbar-logo .logo-text {

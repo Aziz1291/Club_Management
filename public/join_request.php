@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($username) || empty($email) || empty($password) || empty($confirm)) {
         $error = 'All fields are required.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = 'Please enter a valid collegiate email address.';
+        $error = 'Please enter a valid email address.';
     } elseif (strlen($password) < 6) {
         $error = 'Password must be at least 6 characters.';
     } elseif ($password !== $confirm) {
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'That username or email is already registered. Please choose another or sign in.';
         } else {
             $user->addUser($username, $email, $password, 'member');
-            $success = 'Your membership account has been established. You may now sign in as an athlete member.';
+            $success = 'Your membership account has been established. You may now sign in.';
             $username = '';
             $email    = '';
         }
@@ -83,8 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="logo">
                 <img src="../assets/images/logo/logo.svg" alt="Club Crest">
             </div>
-            <span class="kicker">Roster Registration</span>
-            <h1 class="h3">Join the Athletic Club</h1>
+            <span class="kicker">Join the club</span>
+            <h1 class="h3">Join the club</h1>
             <p class="login-subtitle">This is an academic demo. Use sample information to create a member account.</p>
         </div>
 
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="POST">
             <!-- USERNAME -->
             <div class="form-group">
-                <label class="form-label" for="username-input">Athlete Username</label>
+                <label class="form-label" for="username-input">Username</label>
                 <input type="text" id="username-input" name="username" class="form-control"
                        placeholder="e.g. j_miller"
                        value="<?= htmlspecialchars($username) ?>" required autofocus>
@@ -118,9 +118,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <!-- EMAIL -->
             <div class="form-group">
-                <label class="form-label" for="email-input">Collegiate Email Address</label>
+                <label class="form-label" for="email-input">Email address</label>
                 <input type="email" id="email-input" name="email" class="form-control"
-                       placeholder="athlete@university.edu"
+                       placeholder="name@example.com"
                        value="<?= htmlspecialchars($email) ?>" required>
             </div>
 

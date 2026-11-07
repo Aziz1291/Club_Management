@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="logo">
                 <img src="../assets/images/logo/logo.svg" alt="Club Crest">
             </div>
-            <span class="kicker">Collegiate Athletics</span>
+            <span class="kicker">ClubManager</span>
             <h1 class="h3">Portal Sign In</h1>
             <p class="login-subtitle">Academic demo: explore members, events, and messages. Use sample information only.</p>
         </div>
@@ -97,11 +97,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <!-- ROLE -->
             <div class="form-group">
-                <label class="form-label" for="role-select">Collegiate Role</label>
+                <label class="form-label" for="role-select">Role</label>
                 <div class="select-style-1">
                     <select name="role" id="role-select" class="form-control" required>
-                        <option value="member" <?= $role === 'member' ? 'selected' : '' ?>>Varsity Member / Athlete</option>
-                        <option value="admin" <?= $role === 'admin' ? 'selected' : '' ?>>Athletic Director (Admin)</option>
+                        <option value="member" <?= $role === 'member' ? 'selected' : '' ?>>Member</option>
+                        <option value="admin" <?= $role === 'admin' ? 'selected' : '' ?>>Admin (Admin)</option>
                     </select>
                 </div>
             </div>
@@ -120,15 +120,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="demo-accounts__grid">
                     <div class="demo-account-pill">
                         <div class="demo-account-pill__info">
-                            <span class="demo-account-pill__role role-admin"><i class="lni lni-shield"></i> Athletic Director</span>
+                            <span class="demo-account-pill__role role-admin"><i class="lni lni-shield"></i> Admin</span>
                             <span class="demo-account-pill__name">Admin Officer (<code>admin</code>)</span>
                         </div>
                         <button type="button" class="demo-account-pill__btn" aria-label="Fill administrator demo credentials" onclick="fillClubDemo('admin', 'admin123', 'admin')">Use</button>
                     </div>
                     <div class="demo-account-pill">
                         <div class="demo-account-pill__info">
-                            <span class="demo-account-pill__role role-member"><i class="lni lni-user"></i> Varsity Athlete</span>
-                            <span class="demo-account-pill__name">Karim Athlete (<code>member1</code>)</span>
+                            <span class="demo-account-pill__role role-member"><i class="lni lni-user"></i> Member</span>
+                            <span class="demo-account-pill__name">Karim (<code>member1</code>)</span>
                         </div>
                         <button type="button" class="demo-account-pill__btn" aria-label="Fill member demo credentials" onclick="fillClubDemo('member1', 'member123', 'member')">Use</button>
                     </div>
@@ -137,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
 
         <div class="login-footer">
-            <p>Not registered with the athletic club yet?</p>
+            <p>Not a member yet?</p>
             <a href="join_request.php">
                 <i class="lni lni-user"></i> Submit Membership Application
             </a>

@@ -42,9 +42,9 @@ $notice = take_flash_code();
             <!-- Header bar -->
             <div class="events-header-bar">
                 <div>
-                    <span class="kicker">Schedule &amp; Tournaments</span>
+                    <span class="kicker">Events</span>
                     <h1 class="page-title">Club Events</h1>
-                    <p class="page-subtitle">Participate in collegiate meets, training workshops, and team competitions.</p>
+                    <p class="page-subtitle">Register for the events of the club.</p>
                 </div>
                 <div>
                     <a href="my_registrations.php" class="view-registrations-btn">
@@ -59,12 +59,12 @@ $notice = take_flash_code();
                     <div class="d-flex align-items-center gap-3">
                         <i class="lni lni-checkmark-circle icon-success"></i>
                         <div>
-                            <strong>Registration Confirmed!</strong>
-                            <p class="mb-0">Your collegiate athlete tournament pass has been issued and stored in your passbook.</p>
+                            <strong>You are registered!</strong>
+                            <p class="mb-0">You can see it in My registrations.</p>
                         </div>
                     </div>
                     <a href="my_registrations.php" class="btn-club btn-club-primary btn-club-sm">
-                        <i class="lni lni-ticket"></i> Inspect Tournament Passbook &rarr;
+                        <i class="lni lni-ticket"></i> My registrations &rarr;
                     </a>
                 </div>
             <?php elseif ($notice === 'already_registered'): ?>
@@ -73,11 +73,11 @@ $notice = take_flash_code();
                         <i class="lni lni-information icon-success" style="color: var(--accent);"></i>
                         <div>
                             <strong>Already Registered</strong>
-                            <p class="mb-0">You already possess an active tournament pass for this collegiate event.</p>
+                            <p class="mb-0">You are already registered for this event.</p>
                         </div>
                     </div>
                     <a href="my_registrations.php" class="btn-club btn-club-secondary btn-club-sm">
-                        <i class="lni lni-ticket"></i> View Pass &rarr;
+                        <i class="lni lni-ticket"></i> My registrations &rarr;
                     </a>
                 </div>
             <?php endif; ?>
@@ -107,7 +107,7 @@ $notice = take_flash_code();
                         $admin = $ad->getUser($event[5]);
                         $formattedDate = date('M j, Y', strtotime($event[3]));
                         $adminPic = get_avatar_url($admin[5] ?? '');
-                        $adminName = htmlspecialchars($admin[1] ?? 'Athletics Director');
+                        $adminName = htmlspecialchars($admin[1] ?? 'Admin');
                         $adminRole = htmlspecialchars($admin[4] ?? 'Admin');
                         $title = htmlspecialchars($event[1] ?? '');
                         $desc = htmlspecialchars($event[2] ?? '');
@@ -149,10 +149,10 @@ $notice = take_flash_code();
                                 <?php if ($isRegistered): ?>
                                     <div class="registered-badge-box">
                                         <span class="registration-confirmed-badge">
-                                            <i class="lni lni-checkmark-circle"></i> Registered &bull; Pass Issued
+                                            <i class="lni lni-checkmark-circle"></i> Registered
                                         </span>
-                                        <a href="my_registrations.php" class="btn-view-pass" title="Inspect tournament pass">
-                                            <i class="lni lni-ticket"></i> View Pass
+                                        <a href="my_registrations.php" class="btn-view-pass" title="View my registrations">
+                                            <i class="lni lni-ticket"></i> My registrations
                                         </a>
                                     </div>
                                 <?php elseif ($isPast): ?>
@@ -161,7 +161,6 @@ $notice = take_flash_code();
                                     <form action="../actions/register.php" method="POST">
 <?= csrf_field() ?>
                                         <input type="hidden" value="<?= $eventId ?>" name="idEvent">
-                                        <input type="hidden" value="<?= $currentUserId ?>" name="idUser">
                                         <button type="submit" class="btn-attend">
                                             <i class="lni lni-checkmark-circle"></i> Register for Event
                                         </button>
